@@ -1054,91 +1054,91 @@ from collections import deque
 # - s 保证是一个 有效 的输入。
 # - s 中所有整数的取值范围为 [1, 300]
 
-class Solution:
-    def decodeString(self, s: str) -> str:
-        # 创建数字栈，在遍历编码字符串过程中记录出现的数字
-        numStack = []
-
-        # 创建字符栈，在遍历编码字符串过程中记录出现的字符串
-        strStack = []
-
-        # 在访问编码字符串的过程中，用来记录访问到字符串之前出现的数字，一开始为 0
-        digit = 0
-
-        # 在访问编码字符串的过程中，把得到的结果存放到 res 中
-        res = ""
-
-        # 从头到尾遍历编码字符串
-        for ch in s:
-
-            # 在遍历过程中，字符会出现 4 种情况
-            # 先获取此时访问的字符
-            # 1、如果是数字，需要把字符转成整型数字
-            # 注意数字不一定是 1 位，有可能是多位
-            # 比如  123a，在字母 a 的前面出现了 123，表示 a 重复出现 123 次
-            # 那么一开始 ch 为 1，当访问到 ch 为 2 的时候，1 和 2 要组成数字 12
-            # 再出现 3 ，12 和 3 组成数字 123
-            if '0' <= ch <= '9':
-
-                # 先将字符转成整型数字 ch-‘0’
-                # 补充知识：将字符'0'-'9'转换为数字，只需将字符变量减去'0'就行
-                # 因为字符和数字在内存里都是以 ASCII 码形式存储的
-                # 减去 '0' ，其实就是减去字符 '0' 的 ASCII 码，而字符 '0' 的 ASCII 码是 30
-                # 所以减去'0'也就是减去30，然后就可以得到字符对应的数字了。
-                num = int(ch)
-
-                # 再将这个数字和前面存储的数字进行组合
-                # 1 和 2 组成数字 12，也就是 1 * 10 + 2 = 12
-                # 12 和 3 组成数字 123，也就是 12 * 10 + 3 = 123
-                digit = digit * 10 + num
-
-                # 2、如果是字符
-            elif ch >= 'a' and ch <= 'z':
-
-                # 说明它就出现一次，可以直接存放到 res 中
-                res += ch
-
-            # 3、如果是"["
-            # 出现了嵌套的内层编码字符串，而外层的解码需要等待内层解码的结果
-            # 那么之前已经扫描的字符需要存放起来，等到内层解码之后再重新使用
-            elif ch == '[':
-
-                # 把数字存放到数字栈
-                numStack.append(digit)
-
-                # 把外层的解码字符串存放到字符串栈
-                strStack.append(res)
-
-                # 开始新的一轮解码
-                # 于是，digit 归零
-                digit = 0
-
-                # res 重新初始化
-                res = ""
-
-            # 4、如果是"]"
-            elif ch == ']':
-
-                # 此时，内层解码已经有结果，需要把它和前面的字符串进行拼接
-
-                # 第一步，先去查看内层解码的字符串需要被重复输出几次
-                # 比如 e3[abc]，比如内层解码结果 abc 需要输出 3 次
-                # 通过数字栈提取出次数
-                count = numStack.pop()
-
-                # 第二步，通过字符串栈提取出之前的解码字符串
-                outString = strStack.pop()
-
-                # 第三步，不断的把内层解码的字符串拼接起来
-                for j in range(0, count):
-                    # 拼接到 outString 后面，拼接 count 次
-                    outString += res
-
-                # 再把此时得到的结果赋值给 res
-                res = outString
-
-        # 返回解码成功的字符串
-        return res
+# class Solution:
+#     def decodeString(self, s: str) -> str:
+#         # 创建数字栈，在遍历编码字符串过程中记录出现的数字
+#         numStack = []
+#
+#         # 创建字符栈，在遍历编码字符串过程中记录出现的字符串
+#         strStack = []
+#
+#         # 在访问编码字符串的过程中，用来记录访问到字符串之前出现的数字，一开始为 0
+#         digit = 0
+#
+#         # 在访问编码字符串的过程中，把得到的结果存放到 res 中
+#         res = ""
+#
+#         # 从头到尾遍历编码字符串
+#         for ch in s:
+#
+#             # 在遍历过程中，字符会出现 4 种情况
+#             # 先获取此时访问的字符
+#             # 1、如果是数字，需要把字符转成整型数字
+#             # 注意数字不一定是 1 位，有可能是多位
+#             # 比如  123a，在字母 a 的前面出现了 123，表示 a 重复出现 123 次
+#             # 那么一开始 ch 为 1，当访问到 ch 为 2 的时候，1 和 2 要组成数字 12
+#             # 再出现 3 ，12 和 3 组成数字 123
+#             if '0' <= ch <= '9':
+#
+#                 # 先将字符转成整型数字 ch-‘0’
+#                 # 补充知识：将字符'0'-'9'转换为数字，只需将字符变量减去'0'就行
+#                 # 因为字符和数字在内存里都是以 ASCII 码形式存储的
+#                 # 减去 '0' ，其实就是减去字符 '0' 的 ASCII 码，而字符 '0' 的 ASCII 码是 30
+#                 # 所以减去'0'也就是减去30，然后就可以得到字符对应的数字了。
+#                 num = int(ch)
+#
+#                 # 再将这个数字和前面存储的数字进行组合
+#                 # 1 和 2 组成数字 12，也就是 1 * 10 + 2 = 12
+#                 # 12 和 3 组成数字 123，也就是 12 * 10 + 3 = 123
+#                 digit = digit * 10 + num
+#
+#                 # 2、如果是字符
+#             elif ch >= 'a' and ch <= 'z':
+#
+#                 # 说明它就出现一次，可以直接存放到 res 中
+#                 res += ch
+#
+#             # 3、如果是"["
+#             # 出现了嵌套的内层编码字符串，而外层的解码需要等待内层解码的结果
+#             # 那么之前已经扫描的字符需要存放起来，等到内层解码之后再重新使用
+#             elif ch == '[':
+#
+#                 # 把数字存放到数字栈
+#                 numStack.append(digit)
+#
+#                 # 把外层的解码字符串存放到字符串栈
+#                 strStack.append(res)
+#
+#                 # 开始新的一轮解码
+#                 # 于是，digit 归零
+#                 digit = 0
+#
+#                 # res 重新初始化
+#                 res = ""
+#
+#             # 4、如果是"]"
+#             elif ch == ']':
+#
+#                 # 此时，内层解码已经有结果，需要把它和前面的字符串进行拼接
+#
+#                 # 第一步，先去查看内层解码的字符串需要被重复输出几次
+#                 # 比如 e3[abc]，比如内层解码结果 abc 需要输出 3 次
+#                 # 通过数字栈提取出次数
+#                 count = numStack.pop()
+#
+#                 # 第二步，通过字符串栈提取出之前的解码字符串
+#                 outString = strStack.pop()
+#
+#                 # 第三步，不断的把内层解码的字符串拼接起来
+#                 for j in range(0, count):
+#                     # 拼接到 outString 后面，拼接 count 次
+#                     outString += res
+#
+#                 # 再把此时得到的结果赋值给 res
+#                 res = outString
+#
+#         # 返回解码成功的字符串
+#         return res
 
 # 测试代码
 # import unittest
@@ -1241,112 +1241,112 @@ class Solution:
 
 
 # 基本计算器（ LeetCode 224 ）:https://leetcode-cn.com/problems/basic-calculator
-class Solution:
-    def calculate(self, s: str) -> int:
-
-        # 使用栈来储存字符串表达式中的数字
-        stack = list()
-
-        # 为了方便计算，所有的操作都视为加法操作
-        # 那么原先的减法操作就相当于是加一个负数
-        # 默认都是正数
-        sign = 1
-
-        # 保存计算的结果
-        res = 0
-
-        # 获取字符串的长度，然后获取里面的每个字符
-        length = len(s)
-
-        # 从 0 开始访问字符串中的每个字符
-        i = 0
-
-        # 获取字符串里面的每个字符
-        while i < length:
-            # 获取此时的字符
-            ch = s[i]
-
-            if ch == ' ':
-                i += 1
-            # 如果当前字符是数字的话
-            elif ch.isdigit():
-                # 那么把获取到的数累加到结果 res 上
-                value = ord(s[i]) - ord('0')
-
-                # 去查看当前字符的后一位是否存在
-                # 如果操作并且后一位依旧是数字，那么就需要把后面的数字累加上来
-                while i + 1 < length and s[i + 1].isdigit():
-                    i += 1
-                    value = value * 10 + ord(s[i]) - ord('0')
-
-                # 那么把获取到的数累加到结果 res 上
-                res += value * sign
-
-                i += 1
-
-            # 如果是 '+'
-            elif ch == '+':
-                # 那么说明直接加一个正数
-                sign = 1
-
-                i += 1
-
-            # 如果是 '-'
-            elif ch == '-':
-
-                # 那么说明加一个负数
-                sign = -1
-
-                i += 1
-
-            # 如果是 '('
-            elif ch == '(':
-                # 根据数学计算规则，需要先计算括号里面的数字
-                # 而什么时候计算呢？
-                # 遇到 ) 为止
-                # 所以，在遇到 ) 之前需要把之前计算好的结果存储起来再计算
-                # ( ) 直接的计算规则和一开始是一样的
-
-                # 1、先把 ( 之前的结果存放到栈中
-                stack.append(res)
-
-                # 2、重新初始化 res 为 0
-                res = 0
-                # 3、把 ( 左边的操作符号存放到栈中
-                # 比如如果是 5 - （ 2 + 3 ） ，那么就是把 -1 存放进去
-                # 比如如果是 5 +（ 2 + 3 ） ，那么就是把 1 存放进去
-                stack.append(sign)
-
-                # 4、为了方便计算，所有的操作都视为加法操作
-                # 那么原先的减法操作就相当于是加一个负数
-                # 默认都是正数
-                sign = 1
-
-                i += 1
-
-                # 如果是 ')'
-            elif ch == ')':
-
-                # 那么就需要把栈中存放的元素取出来了
-                # 在 ch == '（' 这个判断语句中，每次都会往栈中存放两个元素
-                # 1、先存放左括号外面的结果
-                # 2、再存放左括号外面的符号
-
-                # 1、先获取栈顶元素，即左括号外面的符号，查看是 + 还是 -
-                # 把栈顶元素弹出
-                formerSign = stack.pop()
-
-                # 2、再获取栈顶元素，即左括号结果
-                # 把栈顶元素弹出
-                formerRes = stack.pop()
-
-                # 那结果就是括号外面的结果 + 括号里面的结果，至于是加正数还是负数，取决于左括号外面的符号
-                res = formerRes + formerSign * res
-
-                i += 1
-
-        # 返回计算好的结果
-        return res
+# class Solution:
+#     def calculate(self, s: str) -> int:
+#
+#         # 使用栈来储存字符串表达式中的数字
+#         stack = list()
+#
+#         # 为了方便计算，所有的操作都视为加法操作
+#         # 那么原先的减法操作就相当于是加一个负数
+#         # 默认都是正数
+#         sign = 1
+#
+#         # 保存计算的结果
+#         res = 0
+#
+#         # 获取字符串的长度，然后获取里面的每个字符
+#         length = len(s)
+#
+#         # 从 0 开始访问字符串中的每个字符
+#         i = 0
+#
+#         # 获取字符串里面的每个字符
+#         while i < length:
+#             # 获取此时的字符
+#             ch = s[i]
+#
+#             if ch == ' ':
+#                 i += 1
+#             # 如果当前字符是数字的话
+#             elif ch.isdigit():
+#                 # 那么把获取到的数累加到结果 res 上
+#                 value = ord(s[i]) - ord('0')
+#
+#                 # 去查看当前字符的后一位是否存在
+#                 # 如果操作并且后一位依旧是数字，那么就需要把后面的数字累加上来
+#                 while i + 1 < length and s[i + 1].isdigit():
+#                     i += 1
+#                     value = value * 10 + ord(s[i]) - ord('0')
+#
+#                 # 那么把获取到的数累加到结果 res 上
+#                 res += value * sign
+#
+#                 i += 1
+#
+#             # 如果是 '+'
+#             elif ch == '+':
+#                 # 那么说明直接加一个正数
+#                 sign = 1
+#
+#                 i += 1
+#
+#             # 如果是 '-'
+#             elif ch == '-':
+#
+#                 # 那么说明加一个负数
+#                 sign = -1
+#
+#                 i += 1
+#
+#             # 如果是 '('
+#             elif ch == '(':
+#                 # 根据数学计算规则，需要先计算括号里面的数字
+#                 # 而什么时候计算呢？
+#                 # 遇到 ) 为止
+#                 # 所以，在遇到 ) 之前需要把之前计算好的结果存储起来再计算
+#                 # ( ) 直接的计算规则和一开始是一样的
+#
+#                 # 1、先把 ( 之前的结果存放到栈中
+#                 stack.append(res)
+#
+#                 # 2、重新初始化 res 为 0
+#                 res = 0
+#                 # 3、把 ( 左边的操作符号存放到栈中
+#                 # 比如如果是 5 - （ 2 + 3 ） ，那么就是把 -1 存放进去
+#                 # 比如如果是 5 +（ 2 + 3 ） ，那么就是把 1 存放进去
+#                 stack.append(sign)
+#
+#                 # 4、为了方便计算，所有的操作都视为加法操作
+#                 # 那么原先的减法操作就相当于是加一个负数
+#                 # 默认都是正数
+#                 sign = 1
+#
+#                 i += 1
+#
+#                 # 如果是 ')'
+#             elif ch == ')':
+#
+#                 # 那么就需要把栈中存放的元素取出来了
+#                 # 在 ch == '（' 这个判断语句中，每次都会往栈中存放两个元素
+#                 # 1、先存放左括号外面的结果
+#                 # 2、再存放左括号外面的符号
+#
+#                 # 1、先获取栈顶元素，即左括号外面的符号，查看是 + 还是 -
+#                 # 把栈顶元素弹出
+#                 formerSign = stack.pop()
+#
+#                 # 2、再获取栈顶元素，即左括号结果
+#                 # 把栈顶元素弹出
+#                 formerRes = stack.pop()
+#
+#                 # 那结果就是括号外面的结果 + 括号里面的结果，至于是加正数还是负数，取决于左括号外面的符号
+#                 res = formerRes + formerSign * res
+#
+#                 i += 1
+#
+#         # 返回计算好的结果
+#         return res
 
 # 测试代码
 # import unittest
@@ -1363,3 +1363,554 @@ class Solution:
 #
 # if __name__ == '__main__':
 #     unittest.main()
+
+########################## D02-05 ###################################### 0012
+# LC71. 简化路径
+# 一、题目描述
+# 给你一个字符串 path ，表示指向某一文件或目录的 Unix 风格 绝对路径 （以 '/' 开头），请你将其转化为更加简洁的规范路径。
+# 在 Unix 风格的文件系统中，一个点（.）表示当前目录本身；此外，两个点 （..） 表示将目录切换到上一级（指向父目录）；两者都可以是复杂相对路径的组成部分。任意多个连续的斜杠（即，'//'）都被视为单个斜杠 '/' 。 对于此问题，任何其他格式的点（例如，'...'）均被视为文件/目录名称。
+# 请注意，返回的 规范路径 必须遵循下述格式：
+# - 始终以斜杠 '/' 开头。
+# - 两个目录名之间必须只有一个斜杠 '/' 。
+# - 最后一个目录名（如果存在）不能 以 '/' 结尾。
+# - 此外，路径仅包含从根目录到目标文件或目录的路径上的目录（即，不含 '.' 或 '..'）。
+# 返回简化后得到的 规范路径 。
+# 示例 1：
+# 输入：path = "/home/"
+# 输出："/home"
+# 解释：注意，最后一个目录名后面没有斜杠。
+# 示例 2：
+# 输入：path = "/../"
+# 输出："/"
+# 解释：从根目录向上一级是不可行的，因为根目录是你可以到达的最高级。
+# 示例 3：
+# 输入：path = "/home//foo/"
+# 输出："/home/foo"
+# 解释：在规范路径中，多个连续斜杠需要用一个斜杠替换。
+# 示例 4：
+# 输入：path = "/a/./b/../../c/"
+# 输出："/c"
+# 提示：
+# - 1 <= path.length <= 3000
+# - path 由英文字母，数字，'.'，'/' 或 '_' 组成。
+# - path 是一个有效的 Unix 风格绝对路径。
+# 二、题目解析
+# 我们首先将给定的字符串  path 根据 / 分割成一个由若干字符串组成的列表，记为 names。根据题目中规定的「规范路径的下述格式」，names 中包含的字符串只能为以下几种：
+# 1、空字符串。例如当出现多个连续的 /，就会分割出空字符串；
+# 2、一个点  .；
+# 3、两个点 ..；
+# 4.只包含英文字母、数字或 _ 的目录名。
+# 对于「空字符串」以及「一个点」，我们实际上无需对它们进行处理，因为「空字符串」没有任何含义，而「一个点」表示当前目录本身，我们无需切换目录。
+# 对于「两个点」或者「目录名」，我们则可以用一个栈来维护路径中的每一个目录名。当我们遇到「两个点」时，需要将目录切换到上一级，因此只要栈不为空，我们就弹出栈顶的目录。当我们遇到「目录名」时，就把它放入栈。
+# 这样一来，我们只需要遍历names 中的每个字符串并进行上述操作即可。在所有的操作完成后，我们将从栈底到栈顶的字符串用 / 进行连接，再在最前面加上/ 表示根目录，就可以得到简化后的规范路径。
+# 三、参考代码
+# class Solution:
+#     def simplifyPath(self, path: str) -> str:
+#
+#         # 分割字符串为列表形式
+#         names = path.split("/")
+#         # / / /
+#
+#         # 利用栈来处理
+#         stack = list()
+#
+#         # 访问列表里面的元素
+#         for name in names:
+#             print(name)
+#             # 1、如果是 ..
+#             if name == "..":
+#                 # 在栈不为空的情况下
+#                 if stack:
+#                     # 弹出栈顶元素
+#                     stack.pop()
+#             # 2、如果是有效值
+#             # 字母
+#             elif name and name != ".":
+#                 stack.append(name)
+#         # stack = ['Python', 'World', 'Hello']
+#         # new_string = '/ '.join(stack)
+#         # print(new_string)
+#         # 输出结果 Python/ World/ Hello
+#         # 我们使用/ 作为分隔符，将栈stack中的元素连接成一个新的字符串。
+#         # 每个元素之间使用/ 进行分隔，因此输出结果中每个元素都以/ 结尾（除了最后一个元素）。
+#         return "/" + "/".join(stack)
+
+# 测试代码
+# import unittest
+# class TestSolution(unittest.TestCase):
+#
+#     def test_simplifyPath(self):
+#         sol = Solution()
+#         self.assertEqual(sol.simplifyPath("/home/"), "/home")  # 测试简单路径
+#         self.assertEqual(sol.simplifyPath("/a/./b/../../c/"), "/c")  # 测试包含特殊符号的路径
+#         self.assertEqual(sol.simplifyPath("/../"), "/")  # 测试返回根目录
+#
+#
+# if __name__ == '__main__':
+#     unittest.main()
+
+########################## D02-06 ###################################### 0013
+# LC946. 验证栈序列
+# 预习和复习可以查看我的讲解视频。
+# https://uha.xet.tech/s/N5F05
+# 一、题目描述
+# 给定 pushed 和 popped 两个序列，每个序列中的 值都不重复，只有当它们可能是在最初空栈上进行的推入 push 和弹出 pop 操作序列的结果时，返回 true；否则，返回false 。
+# 示例 1：
+# 输入：pushed = [1,2,3,4,5], popped = [4,5,3,2,1]
+# 输出：true
+# 解释：我们可以按以下顺序执行：
+# push(1), push(2), push(3), push(4), pop() -> 4,
+# push(5), pop() -> 5, pop() -> 3, pop() -> 2, pop() -> 1
+# 示例 2：
+# 输入：pushed = [1,2,3,4,5], popped = [4,3,5,1,2]
+# 输出：false
+# 解释：1 不能在 2 之前弹出。
+# 提示：
+# - 1 <= pushed.length <= 1000
+# - 0 <= pushed[i] <= 1000
+# - pushed 的所有元素 互不相同
+# - popped.length == pushed.length
+# - popped 是 pushed 的一个排列
+# 二、题目解析
+#
+# 三、参考代码
+
+# Java实现
+# class Solution {
+#     public boolean validateStackSequences(int[] pushed, int[] popped) {
+#
+#         // 利用栈来模拟入栈和出栈操作
+#         Stack<Integer> s = new Stack<Integer>();
+#
+#         // index 表示 popped 数组中元素的下标
+#         // 比如 popped 是 [4,5,3,2,1]
+#         // 那么第 0 个下标元素是 4 这个数字
+#         // 先去判断这个数字能否正常的出栈
+#         int index = 0;
+#
+#         // 遍历 pushed 数组中的每个元素
+#         for(int i = 0 ; i < pushed.length; i ++){
+#
+#             // 在遍历 pushed 数组时，把当前遍历的元素加入到栈中
+#             s.push(pushed[i]);
+#
+#             // 加入完之后，不断的执行以下的判断
+#             // 1、栈中是否有元素
+#             // 2、栈顶元素是否和 popped 当前下标的元素相同
+#             // 如果同时满足这两个条件
+#             // 说明这个元素可以满足要求，即可以在最初空栈上进行推入 push 和弹出 pop 操作
+#             while(!s.isEmpty() && popped[index] == s.peek()){
+#
+#                 // 那么就把栈顶元素弹出
+#                 s.pop();
+#
+#                 // 同时 index++，观察 popped 下一个元素
+#                 index++;
+#             }
+#         }
+#
+#         // 遍历完 pushed 数组中的每个元素之后，如果发现栈不为空
+#         if(!s.isEmpty()){
+#
+#             // 那么说明出栈序列不合法，返回 false
+#             return false;
+#
+#         }
+#
+#         // 否则返回 true
+#         return true;
+#
+#     }
+# }
+
+# Python
+# class Solution:
+#     def validateStackSequences(self, pushed: list[int], popped: list[int]) -> bool:
+#         # 利用列表来模拟入栈和出栈操作
+#         stack = []
+#
+#         # index 表示 popped 数组中元素的下标
+#         # 比如 popped 是 [4,5,3,2,1]
+#         # 那么第 0 个下标元素是 4 这个数字
+#         # 先去判断这个数字能否正常的出栈
+#         index = 0
+#
+#         # 遍历 pushed 数组中的每个元素
+#         for i in range(len(pushed)):
+#             # 在遍历 pushed 数组时，把当前遍历的元素加入到列表中
+#             stack.append(pushed[i])
+#
+#             # 加入完之后，不断的执行以下的判断
+#             # 1、列表中是否有元素
+#             # 2、列表末尾元素是否和 popped 当前下标的元素相同
+#             # 如果同时满足这两个条件
+#             # 说明这个元素可以满足要求，即可以在最初空列表上进行推入 push 和弹出 pop 操作
+#             while stack and popped[index] == stack[-1]:
+#                 # 那么就把列表末尾元素弹出
+#                 stack.pop()
+#
+#                 # 同时 index++，观察 popped 下一个元素
+#                 index += 1
+#
+#         # 遍历完 pushed 数组中的每个元素之后，如果发现列表不为空
+#         if stack:
+#             # 那么说明出栈序列不合法，返回 False
+#             return False
+#
+#         # 否则返回 True
+#         return True
+
+# 测试代码
+# import unittest
+# class TestSolution(unittest.TestCase):
+#
+#     def test_validateStackSequences(self):
+#         sol = Solution()
+#         self.assertTrue(sol.validateStackSequences([1, 2, 3, 4, 5], [4, 5, 3, 2, 1]))  # 测试合法的出栈序列
+#         self.assertFalse(sol.validateStackSequences([1, 2, 3, 4, 5], [4, 3, 5, 1, 2]))  # 测试不合法的出栈序列
+#         self.assertTrue(sol.validateStackSequences([1, 2, 3, 4, 5], [3, 2, 1, 5, 4]))  # 测试合法的出栈序列
+#
+# if __name__ == '__main__':
+#     unittest.main()
+
+########################## D02-07 ###################################### 0014
+# 【栈】2023Q1A-投篮大赛
+# 一、题目描述与示例
+# 题目描述
+# 你现在是一场采用特殊赛制投篮大赛的记录员。这场比赛由若干回合组成，过去几回合的得分可能会影响以后几回合的得分。比赛开始时，记录是空白的。你会得到一个记录操作的字符串列表 ops，其中 ops[i] 是你需要记录的第 i 项操作，ops 遵循下述规则：
+# 1. 整数 x 表示本回合新获得分数 x
+# 2. + 表示本回合新获得的得分是前两次得分的总和。
+# 3. D 表示本回合新获得的得分是前一次得分的两倍。
+# 4. C 表示本回合没有分数，并且前一次得分无效，将其从记录中移除。
+# 请你返回记录中所有得分的总和。
+# 输入
+# 输入为一个字符串数组
+# 输出描述
+# 输出为一个整形数字
+# 备注
+# 1. 1 ≤ ops.length ≤ 1000
+# 2. ops[i] 为 C、D、+，或者一个表示整数的字符串。整数范围是 [−3×10^4,3×10^4]
+# 3. 需要考虑异常的存在，如有异常情况，请返回-1：
+# 4. 对于 + 操作，题目数据不保证记录此操作时前面总是存在两个有效的分数
+# 5. 对于 C 和 D 操作，题目数据不保证记录此操作时前面存在一个有效的分数
+# 6. 题目输出范围不会超过整型的最大范围
+# 示例一
+# 输入
+# 5 2 C D +
+# 输出
+# 30
+# 说明
+# 5 记录加 5 ，记录现在是 [5]
+# 2 记录加 2 ，记录现在是 [5, 2]
+# C 使前一次得分的记录无效并将其移除，记录现在是 [5].
+# D 记录加 2 * 5 = 10 ，记录现在是 [5, 10].
+# + 记录加 5 + 10 = 15 ，记录现在是 [5, 10, 15].
+# 所有得分的总和 5 + 10 + 15 = 30
+# 示例二
+# 输入
+# 5 -2 4 C D 9 + +
+# 输出
+# 27
+# 说明
+# 5 记录加 5 ，记录现在是 [5]
+# -2 记录加 -2 ，记录现在是 [5, -2]
+# 4 记录加 4 ，记录现在是 [5, -2, 4]
+# C 使前一次得分的记录无效并将其移除，记录现在是 [5, -2]
+# D 记录加 2 * -2 = -4 ，记录现在是 [5, -2, -4]
+# 9 记录加 9 ，记录现在是 [5, -2, -4, 9]
+# + 记录加 -4 + 9 = 5 ，记录现在是 [5, -2, -4, 9, 5]
+# + 记录加 9 + 5 = 14 ，记录现在是 [5, -2, -4, 9, 5, 14]
+# 所有得分的总和 5 + -2 + -4 + 9 + 5 + 14 = 27
+# 示例三
+# 输入
+# 1
+# 输出
+# 1
+# 示例四
+# 输入
+# +
+# 输出
+# -1
+# 二、解题思路
+# 注意，本题和LC682. 棒球比赛几乎完全一致。唯一的区别在于，本题需要考虑异常的存在，稍微增加了难度。
+#
+# 对于所有的输入，我们可以分为两类：
+# 1. 数字
+# 2. 操作符，包括"C"，"D"，"+"
+#
+# 这三种操作符，都是对最近的一次或两次得分进行操作。看到最近二字，我们应该马上想到使用后进先出LIFO的栈来解题，本质上也是一道表达式求值/化简类型的栈题。
+#
+# 我们首先构建一个空栈stack，然后遍历ops数组中的字符串record，对不同类型的record进行不同操作：
+# 1. 遇到数字型字符串：直接数字入栈，要注意将字符串类型str转化为整数类型int。
+# if record.isdigit():
+#     stack.append(int(record))
+# 2. 遇到"D"：将栈顶元素的两倍入栈，要注意判断此时栈中元素个数len(stack)是否大于等于1。
+# if record == 'D' and len(stack) >= 1:
+#     stack.append(stack[-1] * 2)
+# 3. 遇到"C"：弹出栈顶元素，要注意判断此时栈中元素个数len(stack)是否大于等于1。
+# if record == 'C' and len(stack) >= 1:
+#     stack.pop()
+# 4. 遇到"+"：将栈顶的前两个元素相加后入栈，要注意判断此时栈中元素个数len(stack)是否大于等于2。
+# if record == '+' and len(stack) >= 2:
+#     stack.append(stack[-1] + stack[-2])
+# 5. 如果不满足上述的任何一个条件，则说明此时出现异常。应该输出-1。对于可能出现的异常，我们应该在最开始初始化一个标记isError = False，用于标记是否出现异常的标志，初始化为False表示最开始没有异常。当出现异常时，我们修改isError = True，并且break退出循环。
+#
+# 在循环体外，如果isError == True，说明出现了异常，应该直接输出-1，否则输出sum(stack)表示得分总和。
+#
+# 三、参考代码
+# Java
+# import java.util.*;
+#
+# public class Main {
+#     public static void main(String[] args) {
+#         Scanner scanner = new Scanner(System.in);
+#
+#         // 输入表示n个操作的数组ops
+#         String[] ops = scanner.nextLine().split(" ");
+#
+#         Stack<Integer> stack = new Stack<>();  // 初始化一个空栈
+#
+#         boolean isError = false;  // 用于标记是否出现异常的标志，初始化为false表示没有异常
+#
+#         for (String record : ops) {
+#             // 若record为数字，则直接将该数字加入栈中，注意要将字符串转为整数
+#             if (!record.equals("D") && !record.equals("C") && !record.equals("+")) {
+#                 stack.push(Integer.parseInt(record));
+#             }
+#             // 若record为'D'，且栈长度大于等于1，则在栈顶压入两倍的原栈顶值
+#             else if (record.equals("D") && stack.size() >= 1) {
+#                 stack.push(stack.peek() * 2);
+#             }
+#             // 若record为'C'，且栈长度大于等于1，则弹出栈顶元素
+#             else if (record.equals("C") && stack.size() >= 1) {
+#                 stack.pop();
+#             }
+#             // 若record为'+'，且栈长度大于等于2，则在栈顶压入原栈顶的两个值的和
+#             else if (record.equals("+") && stack.size() >= 2) {
+#                 int top1 = stack.pop();
+#                 int top2 = stack.pop();
+#                 stack.push(top2);
+#                 stack.push(top1);
+#                 stack.push(top1 + top2);
+#             }
+#             // 如果不满足上述的任何条件，说明出现了异常
+#             // 将isError修改为true，同时直接退出循环
+#             else {
+#                 isError = true;
+#                 break;
+#             }
+#         }
+#
+#         // 如果出现异常，输出-1
+#         // 如果没有异常，输出整个栈中数字的总和
+#         int sum = 0;
+#         if (!isError) {
+#             while (!stack.isEmpty()) {
+#                 sum += stack.pop();
+#             }
+#         }
+#         System.out.println(isError ? -1 : sum);
+#
+#         scanner.close();
+#     }
+# }
+
+# python
+# 题目：2023Q1A-投篮大赛
+# 分值：100
+# 算法：栈
+
+# 输入表示n个操作的数组ops
+# ops = input().split(" ")
+#
+# stack = list()      # 初始化一个空栈，在python中可以用list表示栈
+# isError = False     # 用于标记是否出现异常的标志，初始化为False表示没有异常
+#
+# for record in ops:  # 遍历整个ops数组
+#     # 若record为数字，则直接将该数字加入栈中，注意要将str转为int
+#     if record != 'D' and record != 'C' and record != '+':
+#         stack.append(int(record))
+#     # 若record为'D'，且栈长度大于等于1，则在栈顶压入两倍的原栈顶值
+#     elif record == 'D' and len(stack) >= 1:
+#         stack.append(stack[-1] * 2)
+#     # 若record为'C'，且栈长度大于等于1，则弹出栈顶元素
+#     elif record == 'C' and len(stack) >= 1:
+#         stack.pop()
+#     # 若record为'+'，且栈长度大于等于2，则在栈顶压入原栈顶的两个值
+#     elif record == '+' and len(stack) >= 2:
+#         stack.append(stack[-1] + stack[-2])
+#     # 如果不满足上述的任何条件，说明出现了异常，
+#     # 将isError修改为True，同时直接退出循环
+#     else:
+#         isError = True
+#         break
+#
+# # 如果出现异常，输出-1
+# # 如果没有异常，输出整个栈中数字的总和
+# print(-1 if isError else sum(stack))
+
+# 时空复杂度
+# 时间复杂度：O(N)。仅需一次遍历数组。
+# 空间复杂度：O(N)。栈所占用的额外空间。
+
+########################## D02-08 ###################################### 0015
+# 【栈】2023Q1A-解压缩算法
+# 一、题目描述与示例
+# 题目描述
+# 现需要实现一种算法，能将一组压缩字符串还原成原始字符串，还原规则如下：
+# 1. 字符后面加数字 N，表示重复字符 N 次。例如：压缩内容为 A3，表示原始字符串为 AAA。
+# 2. 花括号中的字符串加数字 N，表示花括号中的字符串重复 N 次。例如：压缩内容为{AB}3，表示原始字符串为 ABABAB。
+# 3. 字符加 N 和花括号后面加 N，支持任意的嵌套，包括互相嵌套。例如：压缩内容可以{A3B1{C}3}3。
+# 输入描述
+# 输入一行压缩后的字符串
+# 输出描述
+# 输出压缩前的字符串
+# 说明
+# 输入输出的字符串区分大小写。
+# 输入的字符串长度的范围为[1, 10000]，输出的字符串长度的范围为[1, 100000]，数字 N 范围[1, 10000]
+# 示例一
+# 输入
+# A3
+# 输出
+# AAA
+# 说明
+# A3 代表 A 字符重复 3 次
+# 示例二
+# 输入
+# {A3B1{C}3}3
+# 输出
+# AAABCCCAAABCCCAAABCCC
+# 说明
+# {A3B1{C}3}3 代表 A 字符重复 3 次，B 字符重复 1 次，花括号中的 C 字符重复 3 次，最外层花括号中的 AAABCCC 重复 3 次
+# 二、解题思路
+# 注意，本题和LC394. 字符串解码非常类似。区别在于，本题用花括号表示嵌套而不是中括号，数字出现在花括号之后而不是之前。由于数字出现在括号后，属于一种后缀表达式，而后缀表达式是更加适合栈的计算的，因此本题更加简单。
+#
+# 这题也属于括号配对和表达式求值综合起来的栈题。我们从前往后一次遍历原始字符串s中的字符ch，存在以下几种情况：
+# 1. 遇到字母，入栈
+# 2. 遇到左括号"{"，入栈，作为解压标识符
+# 3. 遇到右括号"}"，说明在此之前肯定存在一个左括号已经入栈，我们需要考虑这对括号之间的所有字符串，并且把这些字符串都合并在一起。所以我们要反复地弹出栈顶元素并记录在一个新的字符串str_in_bracket中，直到遇到左括号"{"，
+# 4. 遇到数字，说明数字之前的字符串需要被重复，需要记录这个数字。
+#
+# 对于前两种入栈的情况，我们可以合并代码，即
+# if ch == "{" or ch.isalpha():
+#     stack.append(ch)
+#
+# 对于遇到右括号"}"的情况，代码如下：
+# if ch == "}":
+#     str_in_bracket = str()
+#     while(stack[-1] != "{"):
+#         str_in_bracket = stack.pop() + str_in_bracket
+#     stack.pop()    # 此时栈顶元素是"{"，直接弹出
+#     stack.append(str_in_bracket)
+#
+# 对于遇到数字的情况，有两个地方需要考虑：
+# 1. 数字num的位数超过1位，如何储存数字。以下代码能够储存位数超过1的数字。
+# num = num * 10 + int(ch)
+# 2. 数字什么时候要使用。当一个数字num已经被完全储存，则应该使栈顶的字符串stack[-1]重复num次。这里的判断逻辑是，ch的下一位已经不是数字，或者ch已经到达s的尾部，说明数字已经储存完毕。
+# if i == len(s)-1 or not s[i+1].isdigit():
+#     stack[-1] *= num
+#     num = 0
+# 另外要注意，数字num使用完毕之后，需要重置为0。
+# 上述代码整理后得到：
+# if ch.isdigit():
+#     num = num * 10 + int(ch)
+#     if i == len(s)-1 or not s[i+1].isdigit():
+#         stack[-1] *= num
+#         num = 0
+#
+#
+# 三、代码
+# Java
+# import java.util.*;
+#
+# public class Main {
+#     public static void main(String[] args) {
+#         Scanner scanner = new Scanner(System.in);
+#         String s = scanner.next();
+#
+#         Stack<String> stack = new Stack<>();
+#         int num = 0;
+#
+#         for (int i = 0; i < s.length(); i++) {
+#             char ch = s.charAt(i);
+#
+#             if (Character.isDigit(ch)) {
+#                 num = num * 10 + (ch - '0');
+#                 if (i == s.length() - 1 || !Character.isDigit(s.charAt(i + 1))) {
+#                     int repeat = num;
+#                     num = 0;
+#                     String top = stack.pop();
+#                     StringBuilder repeated = new StringBuilder();
+#                     while (repeat-- > 0) {
+#                         repeated.append(top);
+#                     }
+#                     stack.push(repeated.toString());
+#                 }
+#             } else if (ch == '{' || Character.isLetter(ch)) {
+#                 stack.push(String.valueOf(ch));
+#             } else if (ch == '}') {
+#                 StringBuilder strInBracket = new StringBuilder();
+#                 while (!stack.isEmpty() && !stack.peek().equals("{")) {
+#                     strInBracket.insert(0, stack.pop());
+#                 }
+#                 stack.pop();
+#                 stack.push(strInBracket.toString());
+#             }
+#         }
+#
+#         StringBuilder result = new StringBuilder();
+#         while (!stack.isEmpty()) {
+#             result.insert(0, stack.pop());
+#         }
+#
+#         System.out.println(result.toString());
+#     }
+# }
+
+
+
+# python
+# 题目：2023Q1A-解压缩算法
+# 分值：200
+# 算法：栈
+
+s = input()
+stack = list()  # 初始化一个栈，在python中可以用list代替栈
+num = 0         # 初始化一个变量num为0，用于栈中数字的记录
+
+# 遍历整个字符串s
+for i, ch in enumerate(s):
+    # 遇到数字，进行数字的计算
+    if ch.isdigit():
+        # num乘10后加上int(ch)
+        num = num * 10 + int(ch)
+        # 如果i是s的最后一位索引，或者i的下一个位置i+1不是数字
+        if i == len(s)-1 or not s[i+1].isdigit():
+            # 那么需要令栈顶字符串重复num次
+            stack[-1] *= num
+            # 由于num已经使用完毕，需要重置num为0
+            num = 0
+    # 遇到左括号"{"或者字母，入栈
+    elif ch == "{" or ch.isalpha():
+        stack.append(ch)
+    # 遇到右括号"}"，说明前面必然存在一个左括号与其闭合
+    # 将栈顶元素不断弹出，弹出的内容构建成一个新的字符串str_in_bracket
+    # 直到遇到与其闭合的左括号，将str_in_bracket重新加入栈顶
+    elif ch == "}":
+        # 初始化该对闭合括号内的字符串str_in_bracket
+        str_in_bracket = str()
+        # 不断弹出栈顶元素，直到栈顶元素为一个左括号"{"
+        while(stack[-1] != "{"):
+            # 将弹出的元素加在str_in_bracket的前面
+            str_in_bracket = stack.pop() + str_in_bracket
+        # 把左括号弹出
+        stack.pop()
+        # 把str_in_bracket重新加入栈顶
+        stack.append(str_in_bracket)
+
+# 最后需要将栈中的所有字符串再用join()方法合并在一起并输出
+print("".join(stack))
+
+# 时空复杂度
+# 时间复杂度：O(N)。仅需一次遍历数组，每一个字符最多出入栈各一次。
+# 空间复杂度：O(N)。栈所占用的额外空间。
