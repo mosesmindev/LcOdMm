@@ -1874,43 +1874,694 @@ from collections import deque
 # 分值：200
 # 算法：栈
 
-s = input()
-stack = list()  # 初始化一个栈，在python中可以用list代替栈
-num = 0         # 初始化一个变量num为0，用于栈中数字的记录
-
-# 遍历整个字符串s
-for i, ch in enumerate(s):
-    # 遇到数字，进行数字的计算
-    if ch.isdigit():
-        # num乘10后加上int(ch)
-        num = num * 10 + int(ch)
-        # 如果i是s的最后一位索引，或者i的下一个位置i+1不是数字
-        if i == len(s)-1 or not s[i+1].isdigit():
-            # 那么需要令栈顶字符串重复num次
-            stack[-1] *= num
-            # 由于num已经使用完毕，需要重置num为0
-            num = 0
-    # 遇到左括号"{"或者字母，入栈
-    elif ch == "{" or ch.isalpha():
-        stack.append(ch)
-    # 遇到右括号"}"，说明前面必然存在一个左括号与其闭合
-    # 将栈顶元素不断弹出，弹出的内容构建成一个新的字符串str_in_bracket
-    # 直到遇到与其闭合的左括号，将str_in_bracket重新加入栈顶
-    elif ch == "}":
-        # 初始化该对闭合括号内的字符串str_in_bracket
-        str_in_bracket = str()
-        # 不断弹出栈顶元素，直到栈顶元素为一个左括号"{"
-        while(stack[-1] != "{"):
-            # 将弹出的元素加在str_in_bracket的前面
-            str_in_bracket = stack.pop() + str_in_bracket
-        # 把左括号弹出
-        stack.pop()
-        # 把str_in_bracket重新加入栈顶
-        stack.append(str_in_bracket)
-
-# 最后需要将栈中的所有字符串再用join()方法合并在一起并输出
-print("".join(stack))
+# s = input()
+# stack = list()  # 初始化一个栈，在python中可以用list代替栈
+# num = 0         # 初始化一个变量num为0，用于栈中数字的记录
+#
+# # 遍历整个字符串s
+# for i, ch in enumerate(s):
+#     # 遇到数字，进行数字的计算
+#     if ch.isdigit():
+#         # num乘10后加上int(ch)
+#         num = num * 10 + int(ch)
+#         # 如果i是s的最后一位索引，或者i的下一个位置i+1不是数字
+#         if i == len(s)-1 or not s[i+1].isdigit():
+#             # 那么需要令栈顶字符串重复num次
+#             stack[-1] *= num
+#             # 由于num已经使用完毕，需要重置num为0
+#             num = 0
+#     # 遇到左括号"{"或者字母，入栈
+#     elif ch == "{" or ch.isalpha():
+#         stack.append(ch)
+#     # 遇到右括号"}"，说明前面必然存在一个左括号与其闭合
+#     # 将栈顶元素不断弹出，弹出的内容构建成一个新的字符串str_in_bracket
+#     # 直到遇到与其闭合的左括号，将str_in_bracket重新加入栈顶
+#     elif ch == "}":
+#         # 初始化该对闭合括号内的字符串str_in_bracket
+#         str_in_bracket = str()
+#         # 不断弹出栈顶元素，直到栈顶元素为一个左括号"{"
+#         while(stack[-1] != "{"):
+#             # 将弹出的元素加在str_in_bracket的前面
+#             str_in_bracket = stack.pop() + str_in_bracket
+#         # 把左括号弹出
+#         stack.pop()
+#         # 把str_in_bracket重新加入栈顶
+#         stack.append(str_in_bracket)
+#
+# # 最后需要将栈中的所有字符串再用join()方法合并在一起并输出
+# print("".join(stack))
 
 # 时空复杂度
 # 时间复杂度：O(N)。仅需一次遍历数组，每一个字符最多出入栈各一次。
 # 空间复杂度：O(N)。栈所占用的额外空间。
+
+
+### D03 哈希表（python中对应字典） ###
+# python中，字典dic是特殊的哈希表  哈希表是无序的
+# 八股点：哈希（字典）的键必须是不可变类型，例如字符、数字等；元组不可变 所以可以作为字典的键；列表、字典可变  所以不能作为字典的键
+# 字典中的键必须各不相同
+# 特殊算法技巧：某些情况下，可以使用列表代替哈希表
+# 哈希集合 存储数据值，即存储元素 不是存储键值对  哈希集合中的值是不同的 无序的
+# python中，用set实现哈希集合
+# 可哈希的：指的是所储存的元素不可以被修改  不可变 哈希表中的键、哈希集合中的元素都是可哈希的  不可以被修改的
+
+
+# 统计元素频率的题  虽然dic可以解  但是不建议用dic  最好还是用counter
+# 只要出现统计次数，就使用hash表的counter类来实现
+
+# LC：leetCode  HJ：牛客网
+
+########################## D03-01 ###################################### 0016
+# LC217. 存在重复元素
+# 视频地址。
+# https://uha.xet.tech/s/7Av8z
+# 一、题目描述
+# 给你一个整数数组 nums 。如果任一值在数组中出现 至少两次 ，返回 true ；如果数组中每个元素互不相同，返回 false 。
+# 示例 1：
+# 输入：nums = [1,2,3,1]
+# 输出：true
+# 示例 2：
+# 输入：nums = [1,2,3,4]
+# 输出：false
+# 示例 3：
+# 输入：nums = [1,1,1,3,3,4,3,2,4,2]
+# 输出：true
+# 提示：
+# - 1 <= nums.length <= 10^5
+# - -10^9 <= nums[i] <= 10^9
+# 二、题目解析
+# 三、参考代码
+
+# 代码一
+# 哈希集合调API讨巧解法
+# 题目：LC217. 存在重复元素
+# 难度：简单
+# 作者：闭着眼睛学数理化
+# 算法：哈希集合调API讨巧解法
+# 代码看不懂的地方，请直接在群上提问
+
+# class Solution:
+#     def containsDuplicate(self, nums: list[int]) -> bool:
+#         return (len(set(nums)) != len(nums))
+# 对上述代码的注释：
+# 由于哈希集合具有不包含重复元素的性质，
+# 如果nums列表中存在重复元素，将其转换成哈希集合后长度必然减少
+# 所以我们只需要判断set(nums)的长度和nums的长度是否一致即可得到答案
+# 如果长度一致，则返回False，说明nums不包含重复元素
+# 如果长度不一致，则返回True，说明nums包含重复元素
+
+# 代码二
+# 哈希集合遍历解法
+# 1. Java 代码
+
+# // 登录 AlgoMooc 官网获取更多算法图解
+# // https://www.algomooc.com
+# // 作者：程序员吴师兄
+# // 微信：wzb_3377
+# // 代码有看不懂的地方一定要私聊咨询吴师兄呀
+# // 存在重复元素（LeetCode 217）:https://leetcode.cn/problems/contains-duplicate/
+# class Solution {
+#     public boolean containsDuplicate(int[] nums) {
+#
+#         // 使用数据结构 set 来存放 nums 里面的所有数字
+#         Set<Integer> set = new HashSet<>();
+#
+#         // 遍历数组
+#         for (int num: nums) {
+#
+#             // 如果数字已经存在于 set 中，直接返回 true
+#             if (set.contains(num)) {
+#                 return true;
+#             }
+#
+#             // 把元素添加到 set 中
+#             set.add(num);
+#         }
+#
+#         // 如果成功遍历完数组，则表示没有重复元素，返回 false
+#         return false;
+#     }
+# }
+
+# 2. Python 代码
+# class Solution:
+#     def containsDuplicate(self, nums: list[int]) -> bool:
+#         # 使用数据结构 set 来存放 nums 里面的所有数字
+#         pre = set()
+#         # 遍历数组
+#         for num in nums:
+#             # 如果数字已经存在于 set 中，直接返回 true
+#             if num in pre:
+#                 return True
+#             # 把元素添加到 set 中
+#             pre.add(num)
+#         # 如果成功遍历完数组，则表示没有重复元素，返回 false
+#         return False
+# 测试代码
+# import unittest
+# class TestContainsDuplicate(unittest.TestCase):
+#
+#     def test_contains_duplicate(self):
+#         sol = Solution()
+#         self.assertTrue(sol.containsDuplicate([1, 2, 3, 1]))  # 有重复元素1
+#         self.assertFalse(sol.containsDuplicate([1, 2, 3, 4]))  # 没有重复元素
+#         self.assertTrue(sol.containsDuplicate([1, 1, 1, 3, 3, 4, 3, 2, 4, 2]))  # 有重复元素1, 3, 4, 2
+#
+# if __name__ == '__main__':
+#     unittest.main()
+
+
+########################## D03-02 ###################################### 0017
+# LC349. 两个数组的交集
+# 视频地址。
+# https://uha.xet.tech/s/4pkrpU
+# 一、题目描述
+# 给定两个数组 nums1 和 nums2 ，返回 它们的交集 。输出结果中的每个元素一定是 唯一 的。我们可以 不考虑输出结果的顺序 。
+# 示例 1：
+# 输入：nums1 = [1,2,2,1], nums2 = [2,2]
+# 输出：[2]
+# 示例 2：
+# 输入：nums1 = [4,9,5], nums2 = [9,4,9,8,4]
+# 输出：[9,4]
+# 解释：[4,9] 也是可通过的
+# 提示：
+# - 1 <= nums1.length, nums2.length <= 1000
+# - 0 <= nums1[i], nums2[i] <= 1000
+# 二、题目解析
+# 三、参考代码
+# 方法一
+# 哈希集合调API解法
+
+# 题目：LC349. 两个数组的交集
+# 难度：简单
+# 作者：闭着眼睛学数理化
+# 算法：哈希集合调API
+# 代码看不懂的地方，请直接在群上提问
+# class Solution:
+#     def intersection(self, nums1: list[int], nums2: list[int]) -> list[int]:
+#         # set(nums1) & set(nums2)代码的作用：
+#         # 这段代码`set(nums1) & set(nums2)`的作用是将列表`nums1`和`nums2`转换为集合，然后使用` & ` 运算符找到这两个集合的交集。
+#         # 具体解释如下：
+#         # -  `set(nums1)`: 将列表`nums1`转换为集合。这将消除`nums1`中的重复元素。
+#         # -  `set(nums2)`: 将列表`nums2`转换为集合。这将消除`nums2`中的重复元素。
+#         # -  ` & ` ： ` & ` 运算符用于找到两个集合的交集，即返回一个新的集合，其中只包含同时存在于`nums1`和`nums2`中的元素。
+#         # 因此，表达式
+#         # `set(nums1) & set(nums2)`将得到一个集合，其中只包含同时存在于`nums1`和`nums2`中的元素，实际上是找到这两个列表中的共同元素，同时去除重复项。
+#         return list(set(nums1) & set(nums2))
+# 上述代码注释：
+# 先将两个数组nums1和nums2用set(nums1)和set(nums2)转化为哈希集合
+# 再使用两个集合的取交集操作&，得到set(nums1)和set(nums2)的交集
+# 由于题目要求返回一个列表，我们还需要把交集再转化为list()，即可返回
+
+# 哈希集合遍历解法
+# class Solution:
+#     def intersection(self, nums1: list[int], nums2: list[int]) -> list[int]:
+#         # 先获得nums1对应的哈希集合
+#         nums1_set = set(nums1)
+#         # 构建一个答案集合，初始化为空
+#         ans_set = set()
+#
+#         # 遍历nums2中的元素num
+#         for num in nums2:
+#             # 如果num位于nums1对应的哈希集合nums1_set中
+#             if num in nums1_set:
+#                 # 则说明num同时位于nums1和nums2中
+#                 # 将其加入ans_set
+#                 ans_set.add(num)
+#
+#         # 最后将ans_set转化为列表后返回
+#         return (list(ans_set))
+
+# 时空复杂度
+# 时间复杂度：O(m+n)。nums1和nums2各自需要遍历一次。
+# 空间复杂度：O(m+n)。两个哈希集合所占用的空间。
+
+# 方法二*
+# 排序+双指针解法（暂不要求掌握）
+# class Solution:
+#     def intersection(self, nums1: list[int], nums2: list[int]) -> list[int]:
+#         # 首先对两个数组进行排序
+#         nums1.sort()
+#
+#         nums2.sort()
+#
+#         # 计算出两个数组的长度
+#         length1 = len(nums1)
+#
+#         length2 = len(nums2)
+#
+#         # 两个数组的交集结果数组长度必然是小于等于最短数组的长度
+#         res = list()
+#
+#         # 设置三个索引指针
+#
+#         # index 指向结果数组 res ，每当 index 指向的位置填充了元素就向后移动
+#         # index = 0
+#
+#         # index1 指向数组 nums1 中的元素，将该元素和 index2 指向数组 nums2 中的元素进行比较
+#         index1 = 0
+#
+#         # index2 指向数组 nums2 中的元素，将该元素和 index1 指向数组 nums1 中的元素进行比较
+#         index2 = 0
+#
+#         # 移动 index1 和 index2
+#         while index1 < length1 and index2 < length2:
+#
+#             # 获取 index1 指向的元素值
+#             num1 = nums1[index1]
+#
+#             # 获取 index2 指向的元素值
+#             num2 = nums2[index2]
+#
+#             # num1 和 num2 的大小关系有三种
+#
+#             # 1、num1 == num2
+#             if num1 == num2:
+#
+#                 # 由于输出结果中的每个元素一定是 【唯一】 的，所以要做一下判断
+#                 # 如果 res 中的 index 在起始位置，说明还没有存放元素
+#                 # 那么这个相等的元素可以存放到 res 中
+#
+#                 # 如果 res 中的 index 不在起始位置
+#                 # 当它前面存放的元素并不是现在想要存放的元素
+#                 # 那么这个相等的元素可以存放到 res 中
+#                 if not res or num1 != res[-1]:
+#                     res.append(num1)
+#
+#                 # 移动 index1 ，比较其它元素
+#                 index1 += 1
+#                 # 移动 index2 ，比较其它元素
+#                 index2 += 1
+#
+#             # 2、num1 < num2
+#             elif num1 < num2:
+#
+#                 # 由于两个数组已经排序了，说明此时 num1 肯定会小于 nums2 数组中 num2 后面所有的数
+#                 # 那 num1 肯定是无法在 nums2 中找到相等的元素
+#                 # 移动 index1 ，比较其它元素
+#                 index1 += 1
+#
+#             # 3、num1 > num2
+#             else:
+#
+#                 # 由于两个数组已经排序了，说明此时 num2 肯定会小于 nums1 数组中 num1 后面所有的数
+#                 # 那 num2 肯定是无法在 nums1 中找到相等的元素
+#                 # 移动 index2 ，比较其它元素
+#                 index2 += 1
+#
+#         # 最后返回结果数组中有值的那些元素就行
+#         return res
+
+# 时空复杂度
+# 时间复杂度：O(mlogm+nlogn)。两数组快排时间复杂度分别是O(mlogm)、O(nlogn)，双指针遍历需要O(m+n)，复杂度取决于较大的O(mlogm+nlogn)。
+# 空间复杂度：O(logm+logn)。排序使用的额外空间。
+
+
+########################## D03-03 ###################################### 0018
+# LC242. 有效的字母异位词
+# 视频地址。
+# https://uha.xet.tech/s/3ev2qz
+# 一、题目描述
+# 给定两个字符串 s 和 t ，编写一个函数来判断 t 是否是 s 的字母异位词。
+# 注意：若 s 和 t 中每个字符出现的次数都相同，则称 s 和 t 互为字母异位词。
+# 示例 1:
+# 输入: s = "anagram", t = "nagaram"
+# 输出: true
+# 示例 2:
+# 输入: s = "rat", t = "car"
+# 输出: false
+# 提示:
+# - 1 <= s.length, t.length <= 5 * 104
+# - s 和 t 仅包含小写字母
+# 进阶: 如果输入字符串包含 unicode 字符怎么办？你能否调整你的解法来应对这种情况？
+# 二、题目解析
+# 题目讲的是让你判断两个字符串中的字母是否一致，比如 示例1 中，s  包含字母 a、n、g、r、m，而 t 中也包含 a、n、g、r、m ，都是只有这五个字母，并且 频次 相同，只是顺序不同。
+# 看到 频次 这个词，你脑海中第一想法是什么？
+# 没错，就是 哈希表 ！
+# 解法思路很简单。
+# 1、首先先判断两个字符串长度是否相同，不相同直接返回 false
+# 2、然后把 s 中所有的字符出现个数使用 计数器 统计起来，存入一个大小为 26 的数组中（注意题目的说明）
+# 3、最后再来统计 t 字符串，即遍历 t 时将对应的字母频次进行减少，如果期间  计数器  出现小于零的情况，则说明 t 中包含一个不存在于 s 中的字母，直接返回 false。
+# 4、最后检查计数器是否归零。
+# 三、参考代码
+# 代码一
+# 哈希集合调API讨巧解法
+
+# 题目：LC242. 有效的字母异位词
+# 难度：简单
+# 作者：闭着眼睛学数理化
+# 算法：哈希集合调API讨巧解法
+# 代码看不懂的地方，请直接在群上提问
+
+# 导入collections中的Counter计数器类
+# from collections import Counter
+# class Solution:
+#     def isAnagram(self, s: str, t: str) -> bool:
+#         return Counter(s) == Counter(t)
+# 上述代码注释：
+# 直接获得s和t的计数结果Counter(s)和Counter(t)
+# 若两者相等，说明s和t中的元素以及频率完全一致，互为字母异位词
+# 若两者不相等，说明s和t中的元素以及频率不完全一致，不是一组有效的字母异位词
+
+# 代码二
+# 哈希集合遍历解法
+
+# 题目：LC242. 有效的字母异位词
+# 难度：简单
+# 作者：闭着眼睛学数理化
+# 算法：哈希集合遍历解法
+# 代码看不懂的地方，请直接在群上提问
+
+# 导入collections中的Counter计数器类
+# from collections import Counter
+#
+# class Solution:
+#     def isAnagram(self, s: str, t: str) -> bool:
+#         # 如果两个字符串长度不同，必然不可能构成一组有效的字母异位词，返回False
+#         if len(s) != len(t):
+#             return False
+#         # 使用Counter()计数器，得到两个字符串对应的哈希表
+#         cnt1, cnt2 = Counter(s), Counter(t)
+#         # 遍历cnt1中的键（即某个特定字符）
+#         for ch in cnt1:
+#             # 如果这个字符在cnt1中的频率和在cnt2中的频率不相等
+#             if cnt1[ch] != cnt2[ch]:
+#                 # 返回False
+#                 return False
+#         # 如果在上述循环中没有返回False，说明这两个字符串互为字母异位词
+#         return True
+
+# 代码三
+# 用列表表示哈希表进行统计
+# class Solution:
+#     def isAnagram(self, s: str, t: str) -> bool:
+#
+#         # 如果两个字符串的长度都不一致，那么肯定是无法成为字母异位词的
+#         if len(s) != len(t):
+#             # 直接返回 False
+#             return False
+#
+#         # 让 a - z 这 26 个字母对应的下标变成 0 - 25 方便存到数组中
+#         # 比如 a 对应的索引就是 0
+#         # b 对应的索引就是 1
+#         table = [0] * 26
+#
+#         # 从头到尾遍历字符串 s
+#         for i in s:
+#             # 把访问的字符转换为整数的形式
+#             # 比如访问字母 a，那么 -'a' 之后就是 0，就是 a 对应的索引为 0
+#             index = ord(i) - ord('a')
+#
+#             # 那么意味着这个字母出现的频次需要加 1
+#             table[index] += 1
+#
+#         for i in t:
+#
+#             # 把访问的字符转换为整数的形式
+#             # 比如访问字母 a，那么 -'a' 之后就是 0，就是 a 对应的索引为 0
+#             index = ord(i) - ord('a')
+#
+#             # 那么意味着这个字母出现的频次需要减 1
+#             table[index] -= 1
+#
+#             # 如果说发现这个字母出现的频次小于了 0
+#             # 说明 t 中出现了 s 中不曾用的字母
+#             if table[index] < 0:
+#                 # 那就不是字母异位词
+#                 return False
+#
+#         # 否则，说明是字母异位词
+#         return True
+# 复杂度分析
+# - 时间复杂度：O(n)，其中 n 为 s 的长度。
+# - 空间复杂度：O(S)，其中 S 为字符集大小，此处 S = 26 。
+
+
+########################## D03-04 ###################################### 0019
+# LC383. 赎金信（HJ81. 字符串字符匹配）
+# 视频地址。
+# https://uha.xet.tech/s/3J5UKp
+# 一、题目描述
+# 给你两个字符串：ransomNote 和 magazine ，判断 ransomNote 能不能由 magazine 里面的字符构成。
+# 如果可以，返回 true ；否则返回 false 。
+# magazine 中的每个字符只能在 ransomNote 中使用一次。
+# 示例 1：
+# 输入：ransomNote = "a", magazine = "b"
+# 输出：false
+# 示例 2：
+# 输入：ransomNote = "aa", magazine = "ab"
+# 输出：false
+# 示例 3：
+# 输入：ransomNote = "aa", magazine = "aab"
+# 输出：true
+# 提示：
+# - 1 <= ransomNote.length, magazine.length <= 10^5
+# - ransomNote 和 magazine 由小写英文字母组成
+# 二、题目解析
+# 三、参考代码
+# 方法一
+# 哈希集合遍历解法
+
+# 题目：LC383. 赎金信
+# 难度：简单
+# 作者：闭着眼睛学数理化
+# 算法：哈希集合遍历解法
+# 代码看不懂的地方，请直接在群上提问
+
+# 导入collections中的Counter计数器类，使用dict()也可以但是代码就要多一些判断
+# from collections import Counter
+# class Solution:
+#     def canConstruct(self, ransomNote: str, magazine: str) -> bool:
+#         # 用两个哈希表保存R和M两个字符串中所有元素出现的频率
+#         cnt_R, cnt_M = Counter(ransomNote), Counter(magazine)
+#
+#         # 由于要计算R是否能够被M完全包含，所以我们要遍历R中的字符
+#         # 遍历cnt_R中的所有字符
+#         for ch in cnt_R:
+#             # 如果发现ch在R中的数目大于在M中的数目，则返回False
+#             if cnt_R[ch] > cnt_M[ch]:
+#                 return False
+#
+#         # 成功退出循环，返回True
+#         return True
+
+# 方法二
+# 用列表表示哈希表进行统计
+# class Solution:
+#     def canConstruct(self, ransomNote: str, magazine: str) -> bool:
+#         # 手动设置哈希表
+#         # 这里的哈希表的作用是计数器
+#         # 由于小写字母的个数为 26 个，所以数组大小为 26
+#         cnt = [0] * 26
+#
+#         # 记录 magazine 里字母出现的次数
+#         for ch in magazine:
+#             # 对于数组类型，其下标为 int 类型
+#             # 可以直接使用 char 类型变量，默认强制转换，存储的就是字母对应的 ASCII 码
+#             # 比如 ch 是 b 字符，那么 b - a = 1，即 needs[1] 表示记录 b 出现的频次
+#             idx = ord(ch) - ord('a')
+#             cnt[idx] += 1
+#
+#         # 再用 ransomNote 去验证这个数组是否包含了 ransomNote 所需要的所有字母
+#         for ch in ransomNote:
+#             # 在遍历过程中，每遍历一个字母，对应的频次减 1
+#             cnt[ord(ch) - ord('a')] -= 1
+#
+#             # 如果发现某个字母的频次小于了 0
+#             # 说明在 ransomNote 中出现了 magazine 未曾有的字母
+#             # 即 ransomNote 不能由 magazine 里面的字符构成
+#             if cnt[ord(ch) - ord('a')] < 0:
+#                 return False
+#
+#         # 说明可以，返回 true
+#         return True
+
+
+########################## D03-05 ###################################### 0020
+# 【哈希表】2023Q1A-集五福
+# 题目描述与示例
+# 集五福
+# 题目描述
+# 集五福作为近年来大家喜闻乐见迎新春活动，集合爱国福、富强福、和谐福、友善福、敬业福即可分享超大红包。
+# 以 0 和 1 组成的长度为 5 的字符串代表每个人所得到的福卡，每一位代表一种福卡，1 表示已经获得该福卡，
+# 单类型福卡不超过 1 张，随机抽取一个小于 10 人团队，求该团队最多可以集齐多少套五福？
+#
+# 输入描述
+# 输入若干个由0、1组成的长度等于5的字符串，代表团队中每个人福卡获得情况
+# 注意1：1人也可以是一个团队
+# 注意2：1人可以有0到5张福卡，但福卡不能重复
+# 输出描述
+# 输出该团队最多能凑齐多少套五福
+# 示例一
+# 输入
+# 11001,11101
+# 输出
+# 0
+# 示例二
+# 输入
+# 11101,10111
+# 输出
+# 1
+# 解题思路
+# 一共有五种不同的福卡，假设我们按照在长度等于5的字符串中的索引给这些福卡编号，即分别有0 1 2 3 4一共5种福卡。我们直接统计整个团队中，每种福卡的个数，而能够凑齐的福卡的套数，由数目最少的那一种福卡的数目来决定。
+#
+# 为了统计每一种福卡的个数，我们既可以使用哈希表来完成，也可以使用一个长度为5的列表来完成。这两种计数方式没有本质区别。
+#
+# 本题显然也是哈希表在【统计元素频率】类型的题目中的典型应用。
+#
+# 代码
+# 代码一
+# 用哈希表进行统计
+# 题目：2023Q1A-集五福
+# 分值：100
+# 作者：闭着眼睛学数理化
+# 算法：哈希表
+# 代码看不懂的地方，请直接在群上提问
+
+# 导入collections中的Counter计数器类，使用dict()也可以但是代码就要多一些判断
+# from collections import Counter
+# # 团队数组，包含了n个字符串，表示每个人拥有的五福
+# team = input().split(",")
+# # 用于统计团队中各种五福个数的长度为的哈希表
+# cnt = Counter()
+#
+# # 遍历团队中的每一个人
+# for person in team:
+#     # 遍历每一个人拥有的五福
+#     for i, num in enumerate(person):
+#         # 如果这个人拥有第i个五福，那么计数+1
+#         if num == "1":
+#             cnt[i] += 1
+#
+# # 整个团队中最少的那个五福的数目，决定了能凑齐五福的套数
+# # 要注意：如果哈希表长度小于5，说明有某个福字的数量为0，应该输出0
+# print(0) if len(cnt) < 5 else print(min(cnt.values()))
+
+# 代码一变体，用dic代替counter实现，不推荐用这种方式，只是作为一个演示：
+# team = input().split(",")
+# dic = dict()
+#
+# for person in team:
+#     for i,card in enumerate(person):
+#         # 必须要这样为dic做判断，否则dic[i]会报错keyError # 这里的讲解 需要回看视频再理一下
+#         if i not in dic:
+#             dic[i] = int(card)
+#         else:
+#             dic[i] += int(card)
+# print(min(dic.values()))
+
+# 代码二
+# 用列表表示哈希表进行统计
+# # 题目：2023Q1A-集五福
+# # 分值：100
+# # 作者：闭着眼睛学数理化
+# # 算法：用列表表示哈希表
+# # 代码看不懂的地方，请直接在群上提问
+#
+# # 团队数组，包含了n个字符串，表示每个人拥有的五福
+# team = input().split(",")
+# # 用于统计团队中各种五福个数的长度为5的列表
+# cnt = [0] * 5
+#
+# # 遍历团队中的每一个人
+# for person in team:
+#     # 遍历每一个人拥有的五福
+#     for i, num in enumerate(person):
+#         # 如果这个人拥有第i个五福，那么计数+1
+#         if num == "1":
+#             cnt[i] += 1
+#
+# # 整个团队中最少的那个五福的数目，决定了能凑齐五福的套数
+# print(min(cnt))
+#
+# 时空复杂度
+# 时间复杂度：O(N)。仅需一次遍历字符串数组。
+# 空间复杂度：O(1)。无论是哈希表还是列表，长度最多为5，为常数级别空间。
+
+########################## D03-06 ###################################### 0021
+# 【哈希表】2023Q1A-删除最少字符
+# 题目描述与示例
+# 题目
+# 删除字符串s中出现次数最少的字符，如果多个字符出现次数一样则都删除。
+# 输入
+# 输入只包含小写字母
+# 输出描述
+# 输出删除后剩余的字符串；若删除后字符串长度为0，则输出字符串"empty"
+# 示例一
+# 输入
+# abcdd
+# 输出
+# dd
+# 示例二
+# 输入
+# aabbccdd
+# 输出
+# empty
+# 解题思路
+# 为了删除掉字符串s中出现次数最少的字符，我们必须先统计s中的所有字母的出现个数，很容易想到使用哈希表的Counter()来完成这个功能。
+# 然后我们再统计哪些字母出现的次数为最小出现次数，用一个哈希集合记录这些需要删除的字母，再使用字符串的replace()方法或者join()方法即可完成删除。
+#
+# 本题显然也是哈希表在统计元素频率类型的题目中的典型应用。
+#
+# 代码
+# Python
+# 推导式代码简便 理解复杂的写法
+
+# 题目：2023Q1A-删除最少字符
+# 分值：100
+# 作者：闭着眼睛学数理化
+# 算法：哈希表
+# 代码看不懂的地方，请直接在群上提问
+
+# # 导入collections中的Counter计数器类，使用dict()也可以，但是代码就要多一些判断
+# from collections import Counter
+#
+# # 输入原始字符串s
+# s = input()
+#
+# # 直接调用Counter()计数器类，获得所有字符的频率
+# cnt = Counter(s)
+#
+# # 获得所有频率中的最小值，即最小频率min_cnt
+# min_cnt = min(cnt.values())
+#
+# # 如果某个字符ch的频率等于最小频率，则记录在哈希集合min_cnt_set中
+# min_cnt_set = set(ch for ch, ch_cnt in cnt.items() if ch_cnt == min_cnt)
+#
+# # 再次遍历s中的所有字符ch，如果ch不位于哈希集合min_cnt_set中，则可以保留，储存在ans数组中
+# ans = [ch for ch in s if ch not in min_cnt_set]
+#
+# # 如果ans的长度为0，说明所有字符均被删除，此时需要输出"empty"
+# # 否则，则用字符串的join()方法，将ans数组转化为字符串并输出
+# print("empty" if len(ans) == 0 else "".join(ans))
+
+
+# 常规写法（易于理解）
+from collections import Counter
+s = input()
+cnt = Counter(s)
+min_cnt = min(cnt.values())
+
+print(cnt)
+print(min_cnt)
+
+del_set = set()
+for ch ,num in cnt.items():
+    if num == min_cnt:
+        del_set.add(ch)
+
+print(del_set)
+
+ans = list()
+for ch in s:
+    if ch not in del_set:
+        ans.append(ch)
+print("".join(ans))
+
+# 时空复杂度
+# 时间复杂度：O(N)。仅需一次遍历字符串数组。
+# 空间复杂度：O(1)。无论是哈希表还是列表，长度最多为26，为常数级别空间。
+
+
+
+
