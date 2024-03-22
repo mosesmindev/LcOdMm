@@ -2352,6 +2352,8 @@ from collections import deque
 #         # 手动设置哈希表
 #         # 这里的哈希表的作用是计数器
 #         # 由于小写字母的个数为 26 个，所以数组大小为 26
+#         # 上一行这里吴师兄的注释有问题，这种声明方式声明的变量cnt是个列表，而不是数组； python原生数据结构只有列表和元组，没有数组，使用数组需要导入numpy库
+#         # 不过 似乎 对普通用户和出题解题而言  可以将数组理解为列表  列表理解为数组
 #         cnt = [0] * 26
 #
 #         # 记录 magazine 里字母出现的次数
@@ -2375,6 +2377,19 @@ from collections import deque
 #
 #         # 说明可以，返回 true
 #         return True
+
+# 测试：
+# s = 'dfasfd'
+# cnt = Counter(s)
+# print(cnt.items())
+# print(cnt.keys())
+# print(cnt.values())
+# min_cnt = min(cnt.values())
+
+# 输出：
+# dict_items([('d', 2), ('f', 2), ('a', 1), ('s', 1)])
+# dict_keys(['d', 'f', 'a', 's'])
+# dict_values([2, 2, 1, 1])
 
 
 ########################## D03-05 ###################################### 0020
@@ -2537,31 +2552,466 @@ from collections import deque
 
 
 # 常规写法（易于理解）
-from collections import Counter
-s = input()
-cnt = Counter(s)
-min_cnt = min(cnt.values())
+# from collections import Counter
+# s = input()
+# cnt = Counter(s)
+# min_cnt = min(cnt.values())
+#
+# print(cnt)
+# print(min_cnt)
+#
+# del_set = set()
+# for ch ,num in cnt.items():
+#     if num == min_cnt:
+#         del_set.add(ch)
+#
+# print(del_set)
+#
+# ans = list()
+# for ch in s:
+#     if ch not in del_set:
+#         ans.append(ch)
+# print("".join(ans))
 
-print(cnt)
-print(min_cnt)
-
-del_set = set()
-for ch ,num in cnt.items():
-    if num == min_cnt:
-        del_set.add(ch)
-
-print(del_set)
-
-ans = list()
-for ch in s:
-    if ch not in del_set:
-        ans.append(ch)
-print("".join(ans))
+# 可以换一种写法
+# ans = str()
+# for ch in s:
+#      if ch not in del_set:
+#           ans += ch
+# print(ans)
 
 # 时空复杂度
 # 时间复杂度：O(N)。仅需一次遍历字符串数组。
 # 空间复杂度：O(1)。无论是哈希表还是列表，长度最多为26，为常数级别空间。
 
+
+########################## D03-07 ###################################### 0022
+# LC387. 字符串中的第一个唯一字符
+# 视频地址 https://uha.xet.tech/s/ZpcpL
+# 一、题目描述
+# 给定一个字符串 s ，找到 它的第一个不重复的字符，并返回它的索引 。如果不存在，则返回 -1 。
+# 示例 1：
+# 输入: s = "leetcode"
+# 输出: 0
+#
+# 示例 2:
+# 输入: s = "loveleetcode"
+# 输出: 2
+#
+# 示例 3:
+# 输入: s = "aabb"
+# 输出: -1
+# 提示:
+# - 1 <= s.length <= 10^5
+# - s 只包含小写字母
+# 二、参考代码
+
+# 本题涉及到 Python 的一些语法知识
+# Python常用内置函数、方法、技巧汇总
+# https://og7kl7g6h8.feishu.cn/docx/AbbMdd4YHoGeQRxRGKJcJZs6nDb
+
+# from collections import Counter
+# class Solution:
+#     def firstUniqChar(self, s: str) -> int:
+#         # Counter 可以直接统计字符串、列表等可迭代对象的元素频率
+#         # s = "leetcode"
+#         # cnt = Counter({'e': 3, 'l': 1, 't': 1, 'c': 1, 'o': 1, 'd': 1})
+#         cnt = Counter(s)
+#         print(cnt)
+#
+#         # 如果想在for循环中同时获得列表的索引 i 和元素值 v
+#         # 可以使用枚举内置函数 enumerate()
+#         for i, ch in enumerate(s):
+#             # 如果找到了某个字符出现的频率为 1
+#             if cnt[ch] == 1:
+#                 # 返回它的下标即可
+#                 return i  # return会跳出函数 找到了那个 就是第1个不重复的 跳出函数即可
+#
+#         # 如果不存在，则返回 -1
+#         return -1
+
+# sol = Solution()
+# print(sol.firstUniqChar('leetcode'))
+
+
+########################## D03-08 ###################################### 0023
+# LeetCode 350、两个数组的交集II
+# 视频地址：
+# 一、题目描述
+# 给你两个整数数组nums1和nums2 ，请你以数组形式返回两数组的交集。
+# 返回结果中每个元素出现的次数，应与元素在两个数组中都出现的次数一致（如果出现次数不一致，则考虑取较小值）。可以不考虑输出结果的顺序。
+#
+# 示例
+# 1：
+# 输入：nums1 = [1, 2, 2, 1], nums2 = [2, 2]
+# 输出：[2, 2]
+# 示例
+# 2:
+# 输入：nums1 = [4, 9, 5], nums2 = [9, 4, 9, 8, 4]
+# 输出：[4, 9]
+#
+# 提示：
+# - 1 <= nums1.length, nums2.length <= 1000
+# - 0 <= nums1[i], nums2[i] <= 1000
+# 二、参考代码
+
+# 1. Java 代码
+# class Solution {
+#     public int[] intersect(int[] nums1, int[] nums2) {
+#         Map<Integer, Integer> count1 = new HashMap<>();
+#         Map<Integer, Integer> count2 = new HashMap<>();
+#         List<Integer> result = new ArrayList<>();
+#
+#         // Count occurrences in the first array
+#         for (int num : nums1) {
+#             count1.put(num, count1.getOrDefault(num, 0) + 1);
+#         }
+#
+#         // Count occurrences in the second array
+#         for (int num : nums2) {
+#             count2.put(num, count2.getOrDefault(num, 0) + 1);
+#         }
+#
+#         // Find the intersection of elements and add to the result list
+#         for (int key : count1.keySet()) {
+#             if (count2.containsKey(key)) {
+#                 int commonCount = Math.min(count1.get(key), count2.get(key));
+#                 for (int i = 0; i < commonCount; i++) {
+#                     result.add(key);
+#                 }
+#             }
+#         }
+#
+#         // Convert the list to an array
+#         int[] resultArray = new int[result.size()];
+#         for (int i = 0; i < result.size(); i++) {
+#             resultArray[i] = result.get(i);
+#         }
+#
+#         return resultArray;
+#     }
+# }
+
+# 2.Python 代码
+# 1、简便写法
+# from collections import Counter
+# class Solution:
+#     def intersect(self, nums1: list[int], nums2: list[int]) -> list[int]:
+#         cnt1 = Counter(nums1)
+#         cnt2 = Counter(nums2)
+#         ans = list()
+#         for k in cnt1:
+#             ans += [k] * min(cnt1[k], cnt2[k])
+#         return ans
+
+
+# 2、复杂易于理解写法-mm
+# from collections import Counter
+# class Solution:
+#     def intersect(self, nums1: list[int], nums2: list[int]) -> list[int]:
+#         cnt1 = Counter(nums1)
+#         cnt2 = Counter(nums2)
+#         ans = list()
+#         for k_num_value,v_count in cnt1.items():
+#             ans += [k_num_value] * min(cnt1[k_num_value], cnt2[k_num_value])
+#         return ans
+
+
+########################## D03-09 ###################################### 0024
+# 【哈希集合】2023Q1A-寻找关键钥匙
+# 题目描述与示例
+# 题目描述
+# 小强正在参加《密室逃生》游戏，当前关卡要求找到符合给定密码 K（升序的不重复小写字母组成）的箱子，并给出箱子编号，箱子编号为 1~N。
+# 每个箱子中都有一个字符串 s，字符串由大写字母，小写字母，数字，标点符号，空格组成，需要在这些字符串中找出所有的字母，忽略大小写且去重后排列出对应的密码串，并返回匹配密码的箱子序号。
+# 注意：满足条件的箱子不超过 1 个。
+# 输入描述
+# 第一行为表示密码 K 的字符串
+# 第二行为一系列箱子 boxes，为字符串数组样式，以空格分隔
+# 箱子 N 数量满足 1<=N<=10000，代表每一个箱子的字符串 s 的长度满足 0 <= s.length <= 50，密码为仅包含小写字母的升序字符串，且不存在重复字母，密码 K 长度满足1 <= K.length <= 26
+# 输出描述
+# 返回对应箱子编号，如不存在符合要求的密码箱，则返回-1
+# 补充说明
+# 箱子中字符拼出的字符串与密码的匹配忽略大小写，且要求与密码完全匹配，如密码 abc 匹配 aBc，但是密码 abc 不匹配 abcd
+# 示例 1
+# 输入
+# abc
+# s,sdf134 A2c4b
+# 输出
+# 2
+# 说明
+# 第 2 个箱子中的 Abc，符合密码 abc
+# 示例 2
+# 输入
+# abc
+# s,sdf134 A2c4bd 523[]
+# 输出
+# -1
+# 说明
+# 第 2 个箱子中的 Abcd，与密码不完全匹配，不符合要求。
+# 解题思路
+# 本题思路非常直接。由于密码K不包含重复字符，每一个箱子字符串s也要做去重处理，因此我们可以直接分别用哈希集合K_set和s_set来表示密码和箱子字符串。
+#
+# 遍历boxes中的每一个字符串s，并且挑选出其中的所有字母ch，并做ch.lower()即转为小写的处理，再所有转为小写的字母构建为s_set，再比较K_set和s_set是否完全相等即可。若相等，则该箱子字符串s所对应的编号i+1（之所以+1是因为箱子的编号是从1而不是从0开始的）即为答案。
+#
+# 思考：如果稍微修改本题的条件，即箱子字符串不做去重处理，即s = "aa" 与 K = "a"不能匹配，那么应该如何修改代码？
+
+# 参考代码
+# Python
+# 1、mm
+# key = input()
+# boxes = input().split(",")
+#
+# k_set = set(key)
+# ans = -1
+# for i,box in enumerate(boxes):
+#     box_lower = str()
+#     for ch in box:
+#         if ch.isalpha():
+#             box_lower += ch.lower()
+#     box_lower_set = set(box_lower)
+#     if k_set == box_lower_set:
+#         ans = i + 1
+#         break
+# print(ans)
+
+# kset = set("abcdef")
+# aset = set("fdebca")
+# print(kset == aset) # 输出TRUE  只要哈希集合中的元素一样，两个哈希集合，与元素顺序无关  所以能直接用if k_set == box_lower_set:来判断  不用考虑为box_lower_set排序
+
+# 2、
+# 题目：2023Q1A-寻找关键钥匙
+# 分值：100
+# 作者：闭着眼睛学数理化
+# 算法：哈希集合
+# 代码有看不懂的地方请直接在群上提问
+
+# K = input()  # 输入密码字符串K
+# boxes = input().split()  # 输入箱子字符串数组boxes
+#
+# ans = -1  # 初始化答案为-1
+# K_set = set(K)  # 得到密码字符串所对应的集合
+#
+# # 遍历boxes字符串中的所有索引i和字符串s
+# for i, s in enumerate(boxes):
+#     # 得到字符串s中所有字母的集合，其中大写字母均转化为小写字母
+#     s_set = {ch.lower() for ch in s if ch.isalpha()}
+#
+#     if K_set == s_set:  # 如果该集合与密码集合相等，则得到了符合要求的箱子编号
+#         ans = i + 1  # 注意箱子编号是从1开始的
+#         break  # 因为只有一个箱子满足要求，所以此时直接退出循环即可
+#
+# print(ans)
+
+# Java
+# import java.util.HashSet;
+# import java.util.Scanner;
+#
+# public class Main {
+#     public static void main(String[] args) {
+#         Scanner scanner = new Scanner(System.in);
+#
+#         String K = scanner.nextLine();                  // 输入密码字符串K
+#         String[] boxes = scanner.nextLine().split(" "); // 输入箱子字符串数组boxes
+#
+#         int ans = -1;                                   // 初始化答案为-1
+#         HashSet<Character> K_set = new HashSet<>();     // 得到密码字符串所对应的集合
+#         for (char ch : K.toCharArray()) {
+#             K_set.add(ch);
+#         }
+#
+#         // 遍历boxes字符串中的所有索引i和字符串s
+#         for (int i = 0; i < boxes.length; i++) {
+#             String s = boxes[i];
+#             HashSet<Character> s_set = new HashSet<>(); // 得到字符串s中所有字母的集合，其中大写字母均转化为小写字母
+#             for (char ch : s.toCharArray()) {
+#                 if (Character.isLetter(ch)) {
+#                     s_set.add(Character.toLowerCase(ch));
+#                 }
+#             }
+#
+#             if (K_set.equals(s_set)) {                   // 如果该集合与密码集合相等，则得到了符合要求的箱子编号
+#                 ans = i + 1;                             // 注意箱子编号是从1开始的
+#                 break;                                   // 因为只有一个箱子满足要求，所以此时直接退出循环即可
+#             }
+#         }
+#
+#         System.out.println(ans);
+#         scanner.close();
+#     }
+# }
+
+
+########################## D03-10 ###################################### 0025
+# 【哈希集合】2023Q1A-明明的随机数
+# 题目描述与示例
+# 题目描述
+# 明明生成了N 个 1 至 500 之间的随机整数。请你删去其中重复的数字，即相同的数字只保留一个，把其余相同的数去掉，然后再把这些数从小到大排序，按照排好的顺序输出。
+# 数据范围： 1 ≤ N ≤ 1000 ，输入的数字大小 val 满足 1 ≤ val ≤ 500
+# 输入描述
+# 第一行先输入随机整数的个数 N 。 接下来的 N 行每行输入一个整数，代表明明生成的随机数。
+# 输出描述：
+# 输出多行，表示输入数据处理后的结果。
+# 示例 1
+# 输入
+# 3
+# 2
+# 2
+# 1
+# 输出
+# 1
+# 2
+# 说明
+# 输入解释：
+# 第一个数字是 3，也即这个样例的 N = 3，说明用计算机生成了 3 个 1 到 500 之间的随机整数，接下来每行一个输入随机数字，共 3 行，也即这 3 个随机数字为：2 2 1
+# 输出解释：2 2 1中，出现了重复的2，只需要输出一个2即可，而且要按照从小到大的顺序输出全部整数，即依次输出1 2
+# 解题思路
+# 这道题直接运用哈希集合不包含重复元素的性质，将每一个整数都加入哈希集合num_set中。
+#
+# 由于哈希集合是一种无序的数据结构，为了从小到大依次输出所有元素，需要在所有元素输入完毕之后，将哈希集合num_set转化为列表num_lst。对列表num_lst就可以进行排序了，排序完成后，在一个for循环内依次输出num_lst中的所有元素即可。
+# 代码
+# Python
+
+# 1、X
+# 题目：2023Q1A-明明的随机数
+# 分值：100
+# 作者：闭着眼睛学数理化
+# 算法：哈希集合
+# 代码有看不懂的地方请直接在群上提问
+
+# N = int(input())
+#
+# # 初始化一个哈希集合num_set，用于储存所有不重复元素
+# num_set = set()
+#
+# # 遍历N次，依次输入数字
+# for _ in range(N):
+#     num_set.add(int(input()))
+#
+# # 哈希集合是无序的数据结构，所以要将哈希集合转化为列表后再排序
+# num_lst = list(num_set)
+# # 对列表进行排序
+# num_lst.sort()
+#
+# # 遍历num_lst中的所有元素，按照从小到大的顺序依次输出
+# for num in num_lst:
+#     print(num)
+
+# 2、MosesMin--简化版
+# N = int(input())
+# num_set = set()
+#
+# for _ in range(N):
+#     num_set.add(int(input()))
+#
+# for num in sorted(num_set):
+#     print(num)
+
+# Java
+# import java.util.HashSet;
+# import java.util.ArrayList;
+# import java.util.Collections;
+# import java.util.Scanner;
+#
+# public class Main{
+#     public static void main(String[] args) {
+#         Scanner scanner = new Scanner(System.in);
+#
+#         int N = scanner.nextInt();
+#         HashSet <Integer> num_set = new HashSet<>();
+#
+#         for(int i = 0; i < N; i++) {
+#             num_set.add(scanner.nextInt());
+#         }
+#
+#         ArrayList<Integer> num_lst = new ArrayList<>(num_set);
+#         Collections.sort(num_lst);
+#
+#         for(int num: num_lst){
+#             System.out.println(num);
+#         }
+#     }
+# }
+
+########################## D03-11 ###################################### 0026
+# 【哈希表】2023Q1A-统计匹配的二元组个数
+# 题目描述与示例
+# 题目
+# 给定两个数组 A 和 B，若数组 A 的某个元素 A[i] 与数组 B 中的某个元素 B[j] 满足 A[i]==B[j]，则寻找到一个匹配的二元组(i,j) ，请统计再这两个数组 A 和 B 中，一共存在多少个这样的二元组。
+# 输入描述
+# 第一行输入数组 A 的长度 M ；
+# 第一行输入数组 B 的长度 N ；
+# 第三行输入数组 A 的值；
+# 第四行输入数组 B 的值。
+# 1 ≤ M, N ≤ 100000
+# A，B 数组中数值的取值均小于 100000
+# 输出描述
+# 输出匹配的二元组个数
+# 示例一
+# 输入
+# 5
+# 4
+# 1 2 3 4 5
+# 4 3 2 1
+# 输出
+# 4
+# 说明
+# 若下标从 0 开始，则匹配的二元组分别为(0,3)，(1,2)，(2,1)，(3,0)，共计 4 对二元组。
+# 示例二
+# 输入
+# 6
+# 3
+# 1 2 4 4 2 1
+# 1 2 3
+# 输出
+# 4
+# 解题思路
+# 数组 A 和 B中各个元素的频率我们都需要统计，可以用两个哈希表进行储存，分别记为cnt_A和cnt_B。接下来我们就来统计能构成的二元组的个数。
+#
+# 接下来我们考虑如何计算二元组的数目。某一个数字num在A中出现的次数为cnt_A[num]，存在两种情况：
+# 1. 如果它在B中没有出现，那么能构成的二元组的个数为0
+# 2. 如果它在B中出现过，出现次数为cnt_B[num]，那么基于简单的乘法原理，能构成的二元组个数为cnt_A[num] * cnt_B[num]
+#
+# 以示例二为例子：元素1在数组A中出现了两次，下标分别为0和5，在数组B中出现了一次，下标为0，所以对于元素1可以构成2 * 1 = 2组二元组，分别为(0, 0)和(5, 0)。元素2也可以构成2组二元组，分别为(1, 1)和(4, 1)。所以一共可以构成2 + 2 = 4组二元组。
+#
+# 如果我们是使用计数器Counter()来储存元素频率，上述两种情况其实可以合并。因为如果num不位于cnt_B的键中，我们会得到cnt_B[num] = 0。因此计算cnt_A[num] * cnt_B[num] = 0。
+#
+# 所以我们只需要遍历cnt_A中的所有键num，计算cnt_A[num]*cnt_B[num]的结果并求和即可。
+#
+# 代码
+#
+# Python
+# 1、X
+# 题目：2023Q1A-统计匹配的二元组个数
+# 分值：200
+# 作者：闭着眼睛学数理化
+# 算法：哈希表
+# 代码看不懂的地方，请直接在群上提问
+
+# 导入collections中的Counter计数器类，使用dict()也可以，但是代码就要多一些判断
+from collections import Counter
+
+nA = int(input())
+nB = int(input())
+cnt_A = Counter(input().split())
+cnt_B = Counter(input().split())
+# 基于乘法原理，计算能够构成的二元组的个数
+print(sum(cnt_A[num] * cnt_B[num] for num in cnt_A))
+
+# 2、MosesMin
+from collections import Counter
+A_M = int(input())
+B_N = int(input())
+
+# cnt_A = Counter(int(input().split())) # TypeError: int() argument must be a string, a bytes-like object or a real number, not 'list'
+cnt_A = Counter(input().split())
+cnt_B = Counter(input().split())
+
+ans = 0;
+for num in cnt_A:
+    # ans = sum(cnt_A[num]*cnt_B[num]) # sum(cnt_A[num]*cnt_B[num]) 这个表达式是不可迭代的  not iterable 无法在每一次遍历时这样运行
+    ans += cnt_A[num]*cnt_B[num]
+
+print(ans)
 
 
 
