@@ -2988,30 +2988,1146 @@ from collections import deque
 # 代码看不懂的地方，请直接在群上提问
 
 # 导入collections中的Counter计数器类，使用dict()也可以，但是代码就要多一些判断
-from collections import Counter
-
-nA = int(input())
-nB = int(input())
-cnt_A = Counter(input().split())
-cnt_B = Counter(input().split())
-# 基于乘法原理，计算能够构成的二元组的个数
-print(sum(cnt_A[num] * cnt_B[num] for num in cnt_A))
+# from collections import Counter
+#
+# nA = int(input())
+# nB = int(input())
+# cnt_A = Counter(input().split())
+# cnt_B = Counter(input().split())
+# # 基于乘法原理，计算能够构成的二元组的个数
+# print(sum(cnt_A[num] * cnt_B[num] for num in cnt_A))
 
 # 2、MosesMin
-from collections import Counter
-A_M = int(input())
-B_N = int(input())
+# from collections import Counter
+# A_M = int(input())
+# B_N = int(input())
+#
+# # cnt_A = Counter(int(input().split())) # TypeError: int() argument must be a string, a bytes-like object or a real number, not 'list'
+# cnt_A = Counter(input().split())
+# cnt_B = Counter(input().split())
+#
+# ans = 0;
+# for num in cnt_A:
+#     # ans = sum(cnt_A[num]*cnt_B[num]) # sum(cnt_A[num]*cnt_B[num]) 这个表达式是不可迭代的  not iterable 无法在每一次遍历时这样运行
+#     ans += cnt_A[num]*cnt_B[num]
+#
+# print(ans)
 
-# cnt_A = Counter(int(input().split())) # TypeError: int() argument must be a string, a bytes-like object or a real number, not 'list'
-cnt_A = Counter(input().split())
-cnt_B = Counter(input().split())
 
-ans = 0;
-for num in cnt_A:
-    # ans = sum(cnt_A[num]*cnt_B[num]) # sum(cnt_A[num]*cnt_B[num]) 这个表达式是不可迭代的  not iterable 无法在每一次遍历时这样运行
-    ans += cnt_A[num]*cnt_B[num]
+########################## D04-01 ###################################### 0027
+# LC1.两数之和
+# 一、题目描述
+# 给定一个整数数组nums# 和一个整数目标值target，请你在该数组中找出和为目标值target的那两个整数，并返回它们的数组下标。
+# 你可以假设每种输入只会对应一个答案。但是，数组中同一个元素在答案里不能重复出现。你可以按任意顺序返回答案。
+#
+# 示例
+# 1：
+# 输入：nums = [2, 7, 11, 15], target = 9
+# 输出：[0, 1]
+# 解释：因为
+# nums[0] + nums[1] == 9 ，返回[0, 1] 。
+# 示例
+# 2：
+# 输入：nums = [3, 2, 4], target = 6
+# 输出：[1, 2]
+# 示例
+# 3：
+# 输入：nums = [3, 3], target = 6
+# 输出：[0, 1]
+#
+# 提示：
+# - 2 <= nums.length <= 10(4)
+# - -10(9) <= nums[i] <= 10(9)
+# - -10(9) <= target <= 10(9)
+# - 只会存在一个有效答案
+# 二、题目解析
+#
+# 三、参考代码
+# 1、W
+# 登录 AlgoMooc 官网获取更多算法图解
+# https://www.algomooc.com
+# 作者：程序员吴师兄
+# 代码有看不懂的地方一定要私聊咨询吴师兄呀
+# 两数之和（LeetCode 1）:https://leetcode-cn.com/problems/two-sum/
+# class Solution:
+#     def twoSum(self, nums: List[int], target: int) -> List[int]:
+#        # 首先构建一个哈希表，用来存放数组的元素值以及索引值
+#        # 其中 key 是数组中的元素值
+#        # value 为数组中元素值的索引
+#        map = dict()
+#
+#        # 接下来，遍历整个数组
+#        for i, num in enumerate(nums):
+#            # 目标值为 target，将 target 与 nums[i] 求差
+#            # 获取与 nums[i] 配对的那个数 anotherNum
+#            anotherNum = target - num
+#
+#            # 判断哈希表中是否存在那个与 nums[i] 配对的数 anotherNum
+#            if anotherNum in map :
+#
+#                # 由于哈希表中所有 key 都是来自于数组中，
+#                # 所以，如果发现哈希表存在那个与 nums[i] 配对的数 anotherNum
+#                # 也就说明数组中存在一个数，可以和 nums[i] 相加为 target
+#                # 此时， anotherNum 这个 key 对应的 value 为这个数在数组中的索引
+#                # 所以，返回 map.get(anotherNum) 和 i 就是这两个值的下标
+#                return [ map[ target - num ] , i ]
+#            else:
+#               # 如果发现哈希表中目前不存在那个与 nums[i] 配对的数 anotherNum
+#               # 那么就把此时观察的数 nums[i] 和它的索引存放到哈希表中
+#               # 等待后面的数能和它配对为 target
+#              map[nums[i]] = i
+#
+#        # 如果遍历完整个数组都找不到和为 target 的两个数，返回 0
+#        return []
 
-print(ans)
+# 2、MosesMin
+# class Solution:
+#     def twoSum(self, nums: list[int], target: int) -> list[int]:
+#        # 首先构建一个哈希表，用来存放数组的元素值以及索引值
+#        # 其中 key 是数组中的元素值
+#        # value 为数组中元素值的索引
+#        map = dict()
+#
+#        # 接下来，遍历整个数组
+#        for i, num in enumerate(nums):
+#            # 目标值为 target，将 target 与 nums[i] 求差
+#            # 获取与 nums[i] 配对的那个数 anotherNum
+#            anotherNum = target - num
+#
+#            # 判断哈希表中是否存在那个与 nums[i] 配对的数 anotherNum
+#            if anotherNum in map :
+#
+#                # 由于哈希表中所有 key 都是来自于数组中，
+#                # 所以，如果发现哈希表存在那个与 nums[i] 配对的数 anotherNum
+#                # 也就说明数组中存在一个数，可以和 nums[i] 相加为 target
+#                # 此时， anotherNum 这个 key 对应的 value 为这个数在数组中的索引
+#                # 所以，返回 map.get(anotherNum) 和 i 就是这两个值的下标
+#                return [map[anotherNum] ,i]
+#            else:
+#               # 如果发现哈希表中目前不存在那个与 nums[i] 配对的数 anotherNum
+#               # 那么就把此时观察的数 nums[i] 和它的索引存放到哈希表中
+#               # 等待后面的数能和它配对为 target
+#              map[num] = i
+#
+#        # 如果遍历完整个数组都找不到和为 target 的两个数，返回 0
+#        return []
+
+########################## D04-02 ###################################### 0028
+# LC219. 存在重复元素II
+# 一、题目描述
+# 给你一个整数数组 nums 和一个整数 k ，判断数组中是否存在两个 不同的索引 i 和 j ，
+# 满足 nums[i] == nums[j] 且 abs(i - j) <= k 。如果存在，返回 true ；否则，返回 false 。
+# 示例 1：
+# 输入：nums = [1,2,3,1], k = 3
+# 输出：true
+# 示例 2：
+# 输入：nums = [1,0,1,1], k = 1
+# 输出：true
+# 示例 3：
+# 输入：nums = [1,2,3,1,2,3], k = 2
+# 输出：false
+# 提示：
+# - 1 <= nums.length <= 10^5
+# - -109 <= nums[i] <= 10^9
+# - 0 <= k <= 10^5
+# 二、题目解析
+#
+# 三、参考代码
+# 1、W
+# class Solution:
+#     def containsNearbyDuplicate(self, nums: list[int], k: int) -> bool:
+#
+#         # 使用哈希集合
+#         pos = {}
+#
+#         # 如果想在 for 循环中同时获得列表的索引 i 和元素值 v
+#         # 可以使用枚举内置函数 enumerate()
+#         for i, v in enumerate(nums):
+#             # 1、如果发现当前这个元素 v 已经存在于哈希集合里面
+#             # 说明在此之前就已经访问到了一个元素，值为 v
+#             # 2、pos[v] 表示的是之前访问到的元素值所在的索引
+#             # 判断 i - pos[v] <= k
+#             if v in pos and i - pos[v] <= k:
+#                 # 符合要求，就返回 True
+#                 return True
+#             # 否则，把 v 和 i 存储到哈希集合里面
+#             pos[v] = i
+#
+#         # 最终没有找到，返回 False
+#         return False
+
+# 2、MosesMin
+# class Solution:
+#     def mm(self,nums:list[int],k:int)->list[int]:
+
+#         # hashSave = {} # 不推荐的哈希集合 哈希表 字典的写法
+#         hashSave = dict()
+#         for i,num in enumerate(nums):
+#             if num in hashSave and i - hashSave[num] <= k:
+#                 return True
+#
+#             hashSave[num] = i
+#         return False
+#
+# sol = Solution()
+# print(sol.mm([1,2,3,1,1],1))
+
+
+########################## D04-03 ###################################### 0029
+# LC205.同构字符串
+# 一、题目描述
+# 给定两个字符串s和t ，判断它们是否是同构的。
+# 如果s中的字符可以按某种映射关系替换得到t ，那么这两个字符串是同构的。
+# 每个出现的字符都应当映射到另一个字符，同时不改变字符的顺序。
+# 不同字符不能映射到同一个字符上，相同字符只能映射到同一个字符上，字符可以映射到自己本身。
+#
+# 示例
+# 1:
+# 输入：s = "egg", t = "add"
+# 输出：true
+# 示例
+# 2：
+# 输入：s = "foo", t = "bar"
+# 输出：false
+# 示例
+# 3：
+# 输入：s = "paper", t = "title"
+# 输出：true
+# 提示：
+# - 1 <= s.length <= 5 * 10 ^ 4
+# - t.length == s.length
+# - s和t由任意有效的ASCII字符组成
+#
+# 二、参考代码
+# 1、W
+# class Solution:
+#     def isIsomorphic(self, s: str, t: str) -> bool:
+#
+#         # 设置一个哈希集合用来存储字符串 s 当中的元素  # 吴师兄的注释 有错误
+#         # MosesMin：上一行WSX的注释是有问题的，这里应该是设置了哈希表(即python中的字典dict)，而不是哈希集合；
+#         # 哈希集合中的元素是不重复的，哈希表中key不能重复，但是哈希表的元素的value是可以重复的
+#         # python中，哈希表可以用{}、或者字典dict()声明，但是哈希集合要用set()
+#         dic1 = {}
+#
+#         # 设置一个哈希集合用来存储字符串 t 当中的元素
+#         dic2 = {}
+#
+#         # 由于 t.length == s.length
+#         # 按照顺序访问 s 和 t 中对应的元素
+#         for i in range(len(s)):
+#
+#             # 1、访问的元素 s[i] 存在于 dic1 中
+#             # 并且发现它对应的元素值和当前 t 中元素 t[i] 不相同
+#             # 返回 False
+#             if s[i] in dic1 and dic1[s[i]] != t[i]:
+#                 return False
+#
+#             # 2、访问的元素 t[i] 存在于 dic2 中
+#             # 并且发现它对应的元素值和当前 s 中元素 s[i] 不相同
+#             # 返回 False
+#             if t[i] in dic2 and dic2[t[i]] != s[i]:
+#                 return False
+#
+#             # 3、访问的元素 s[i] 不存在于 dic1 中
+#             # 存放到哈希集合中
+#             if s[i] not in dic1:
+#                 # dic1[s[i]] = t[i]
+#                 dic1[s[i]] = t[i]
+#
+#             # 3、访问的元素 t[i] 不存在于 dic2 中
+#             # 存放到哈希集合中
+#             if t[i] not in dic2:
+#                 # dic2[t[i]] = s[i]
+#                 dic2[t[i]] = s[i]
+#         # 返回 True
+#         return True
+
+# 2、MosesMin
+# class Solution:
+#     def isIsomorphic(self, s: str, t: str) -> bool:
+#
+#         # 设置一个字典-即哈希表，用以存储字符s中的元素
+#         dicS = dict()
+#
+#         # 设置一个字典-即哈希表，用以存储字符t中的元素
+#         dicT = dict()
+#
+#         # 由于 t.length == s.length
+#         # 按照顺序访问 s 和 t 中对应的元素
+#         for i in range(len(s)):
+#
+#             # 1、访问的元素 s[i] 存在于 dicS 中
+#             # 并且发现它对应的元素值和当前 t 中元素 t[i] 不相同
+#             # 返回 False
+#             if s[i] in dicS and dicS[s[i]] != t[i]:
+#                 return False
+#
+#             # 2、访问的元素 t[i] 存在于 dicT 中
+#             # 并且发现它对应的元素值和当前 s 中元素 s[i] 不相同
+#             # 返回 False
+#             if t[i] in dicT and dicT[t[i]] != s[i]:
+#                 return False
+#
+#             # 3、访问的元素 s[i] 不存在于 dicS 中
+#             # 存放到哈希集合中
+#             if s[i] not in dicS:
+#                 dicS[s[i]] = t[i]
+#
+#             # 3、访问的元素 t[i] 不存在于 dicT 中
+#             # 存放到哈希集合中
+#             if t[i] not in dicT:
+#                 dicT[t[i]] = s[i]
+#         # 返回 True
+#         return True
+
+
+########################## D04-04 ###################################### 0030
+# LC49. 字母异位词分组
+# 一、题目描述
+# 给你一个字符串数组，请你将 字母异位词 组合在一起。可以按任意顺序返回结果列表。
+# 字母异位词 是由重新排列源单词的字母得到的一个新单词，所有源单词中的字母通常恰好只用一次。
+# 示例 1:
+# 输入: strs = ["eat", "tea", "tan", "ate", "nat", "bat"]
+# 输出: [["bat"],["nat","tan"],["ate","eat","tea"]]
+# 示例 2:
+# 输入: strs = [""]
+# 输出: [[""]]
+# 示例 3:
+# 输入: strs = ["a"]
+# 输出: [["a"]]
+# 提示：
+# - 1 <= strs.length <= 10^4
+# - 0 <= strs[i].length <= 100
+# - strs[i] 仅包含小写字母
+# 二、参考代码
+
+# 1、W
+# class Solution:
+#     def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
+#         # 互为字母异位词的两个字符串包含的字母相同
+#         # 因此两个字符串中的相同字母出现的次数一定是相同的
+#         # 可以将每个字母出现的次数使用字符串表示，作为哈希表的键
+#         mp = collections.defaultdict(list)
+#
+#         for s in strs:
+#             # counts 代表每个小写字母出现的频次
+#             counts = [0] * 26
+#
+#             # 利用 for 循环，统计 str 当中每个字母出现的频次
+#             for c in s:
+#                 counts[ord(c) - ord('a')] += 1
+#
+#             # 将每个出现次数大于 0 的字母和出现次数按顺序拼接成字符串，作为哈希表的键
+#             key = ''.join(['#'+str(count) for count in counts])
+#
+#             # 在哈希表 mp 当中找出这个 key 对应的字符串 str 来
+#             # 1、如果有这个 key，那么这个 key 对应的 数组 会新增一个 str 进去
+#             # 2、如果没有这个 key，那么会初始化一个数组，用来新增这个 str
+#             mp[key].append(s)
+#
+#         # 返回结果
+#         return list(mp.values())
+
+
+# 2、MosesMin
+# import collections
+# class Solution:
+#     def groupAnagrams(self, strs: list[str]) -> list[list[str]]:
+#         # 互为字母异位词的两个字符串包含的字母相同
+#         # 因此两个字符串中的相同字母出现的次数一定是相同的
+#         # 可以将每个字母出现的次数使用字符串表示，作为哈希表的键
+#         # 下行代码初始化的map的样式   {0:[]}
+#         map = collections.defaultdict(list)
+#
+#         for string in strs:
+#             # counts 代表每个小写字母出现的频次
+#             countString = [0] * 26
+#
+#             # 利用 for 循环，统计 str 当中每个字母出现的频次
+#             for ch in string:
+#                 countString[ord(ch) - ord('a')] += 1
+#
+#             # 将每个出现次数大于 0 的字母和出现次数按顺序拼接成字符串，作为哈希表的键
+#             key = ''.join(['#'+str(countCh) for countCh in countString])
+#
+#             # 在哈希表 map 当中找出这个 key 对应的字符串 string 来
+#             # 1、如果有这个key，那么这个key对应的数组会新增一个string进去
+#             # 即为map中的key添加string
+#             # 2、如果没有这个key，那么会初始化一个数组，用来新增这个string
+#             # 即将key和string 作为键值对一同添加进map
+#             map[key].append(string)
+#
+#         # 返回结果
+#         return list(map.values())
+
+
+########################## D04-05 ###################################### 0031
+# LC290. 单词规律
+# 一、题目描述
+# 给定一种规律 pattern 和一个字符串 s ，判断 s 是否遵循相同的规律。
+# 这里的 遵循 指完全匹配，例如， pattern 里的每个字母和字符串 s 中的每个非空单词之间存在着双向连接的对应规律。
+# 示例1:
+# 输入: pattern = "abba", s = "dog cat cat dog"
+# 输出: true
+# 示例 2:
+# 输入:pattern = "abba", s = "dog cat cat fish"
+# 输出: false
+# 示例 3:
+# 输入: pattern = "aaaa", s = "dog cat cat dog"
+# 输出: false
+# 提示:
+# - 1 <= pattern.length <= 300
+# - pattern 只包含小写英文字母
+# - 1 <= s.length <= 3000
+# - s 只包含小写英文字母和 ' '
+# - s 不包含 任何前导或尾随对空格
+# - s 中每个单词都被 单个空格 分隔
+# 二、参考代码
+
+# 1、W
+# class Solution:
+#     def wordPattern(self, pattern: str, s: str) -> bool:
+#
+#         s = s.split()
+#
+#         if len(pattern) != len(s):
+#             return False
+#
+#         t = pattern
+#
+#         # 接下来的逻辑和 LC205. 同构字符串 一模一样
+#
+#         # 设置一个哈希集合用来存储字符串 s 当中的元素
+#         dic1 = {}
+#
+#         # 设置一个哈希集合用来存储字符串 t 当中的元素
+#         dic2 = {}
+#
+#         # 由于 t.length == s.length
+#         # 按照顺序访问 s 和 t 中对应的元素
+#         for i in range(len(pattern)):
+#
+#             # 1、访问的元素 s[i] 存在于 dic1 中
+#             # 并且发现它对应的元素值和当前 t 中元素 t[i] 不相同
+#             # 返回 False
+#             if s[i] in dic1 and dic1[s[i]] != t[i]:
+#                 return False
+#
+#             # 2、访问的元素 t[i] 存在于 dic2 中
+#             # 并且发现它对应的元素值和当前 s 中元素 s[i] 不相同
+#             # 返回 False
+#             if t[i] in dic2 and dic2[t[i]] != s[i]:
+#                 return False
+#
+#             # 3、访问的元素 s[i] 不存在于 dic1 中
+#             # 存放到哈希集合中
+#             if s[i] not in dic1:
+#                 # dic1[s[i]] = t[i]
+#                 dic1[s[i]] = t[i]
+#
+#             # 3、访问的元素 t[i] 不存在于 dic2 中
+#             # 存放到哈希集合中
+#             if t[i] not in dic2:
+#                 # dic2[t[i]] = s[i]
+#                 dic2[t[i]] = s[i]
+#         # 返回 True
+#         return True
+
+# 2、MosesMin
+# class Solution:
+#     def wordPattern(self, pattern: str, s: str) -> bool:
+#
+#         s = s.split()
+#
+#         if len(pattern) != len(s):
+#             return False
+#
+#         t = pattern
+#
+#         # 接下来的逻辑和 LC205. 同构字符串 一模一样
+#         # 设置一个字典-即哈希表，用以存储字符s中的元素
+#         dicS = dict()
+#
+#         # 设置一个字典-即哈希表，用以存储字符t中的元素
+#         dicT = dict()
+#
+#         # 由于 t.length == s.length
+#         # 按照顺序访问 s 和 t 中对应的元素
+#         for i in range(len(s)):
+#
+#             # 1、访问的元素 s[i] 存在于 dicS 中
+#             # 并且发现它对应的元素值和当前 t 中元素 t[i] 不相同
+#             # 返回 False
+#             if s[i] in dicS and dicS[s[i]] != t[i]:
+#                 return False
+#
+#             # 2、访问的元素 t[i] 存在于 dicT 中
+#             # 并且发现它对应的元素值和当前 s 中元素 s[i] 不相同
+#             # 返回 False
+#             if t[i] in dicT and dicT[t[i]] != s[i]:
+#                 return False
+#
+#             # 3、访问的元素 s[i] 不存在于 dicS 中
+#             # 存放到哈希集合中
+#             if s[i] not in dicS:
+#                 dicS[s[i]] = t[i]
+#
+#             # 3、访问的元素 t[i] 不存在于 dicT 中
+#             # 存放到哈希集合中
+#             if t[i] not in dicT:
+#                 dicT[t[i]] = s[i]
+#         # 返回 True
+#         return True
+
+########################## D04-06 ###################################### 0032
+# 【哈希表】2023Q1A-字符串重新排序
+# 题目描述
+# 给定一个字符串 s，s 包含以空格分隔的若干个单词，请对 s 进行如下处理后输出：
+# 1. 单词内部调整：对每个单词字母重新按字典序排序；
+# 2. 单词间顺序调整：
+#   1. 统计每个单词出现的次数，并按次数降序排列；
+#   2. 次数相同时，按单词长度升序排列；
+#   3. 次数和单词长度均相同时，按字典序升序排列。
+# 请输出处理后的字符串，每个单词以一个空格分隔。
+# 输入描述
+# 一行字符串，每个字符取值范围：[a-z, A-Z, 0-9] 以及空格" "，字符串长度范围：[1, 1000]
+# 输出描述,
+# 重新排序后的字符串，每个单词间隔 1 个空格，且首尾无空格
+# 示例一
+# 输入
+# This is an apple
+# 输出
+# an is This aelpp
+# 示例二
+# 输入
+# My sister is in the house not in the yard
+# 输出
+# in in eht eht My is not adry ehosu eirsst
+# 解题思路
+# 本题包含单词内和单词间的两种排序。先考虑单词内的排序，再考虑单词间的排序。
+#
+# 对于单词内的排序，需要对每个单词字母重新按字典序排序。所以我们在代码，对于lst中的每一个单词word：
+# 1. 用list(word)将字符串word转化为列表
+# 2. 用sorted()内置函数得到按照字典序排序的结果
+# 3. 用join()方法将排序结果重新转化为字符串
+# 最后再使用列表推导式，可以得到每个单词内部进行排序后的新列表new_lst。
+# new_lst = ["".join(sorted(list(word))) for word in lst]
+# 对于单词间的排序，需要依次考虑三个因素：
+# 1. 单词出现频率
+# 2. 单词长度
+# 3. 单词字典序
+# 对于单词出现频率这个因素，我们很容易想到直接使用哈希表计数器Counter()来统计，即
+# cnt = Counter(new_lst)
+# 而长度因素，可以很容易地使用len()内置函数得到。
+#
+# 所以我们使用lambda匿名函数来辅助new_lst的排序，即
+# new_lst.sort(key = lambda x: (-cnt[x], len(x), x))
+# 要注意，由于要求按照单词出现频率降序排列，我们应该以-cnt[x]而不是cnt[x]做为第一个排序依据。
+#
+# 最后，还需要把new_lst的排序结果再一次使用join()方法合并为字符串并输出。注意合并时要用空格" "隔开每一个单词。
+# print(" ".join(new_lst))
+#
+#
+# 代码
+# Python
+
+# 题目：2023Q1A-字符串重新排列
+# 分值：100
+# 作者：许老师-闭着眼睛学数理化
+# 算法：哈希表，排序
+# 代码看不懂的地方，请直接在群上提问
+
+# # 1、X
+# from collections import Counter
+#
+# lst = input().split()
+# n = len(lst)  # 这行没用 MosesMin注释
+#
+# # 单词内的排序：
+# # 对于lst中的每一个单词word：
+# # 1. 用list(word)转化为列表
+# # 2. 用sorted()内置函数得到按照字典序排序的结果
+# # 3. 用join()方法将排序结果重新转化为字符串
+# # 再使用列表推导式，可以得到新的列表
+# new_lst = ["".join(sorted(list(word))) for word in lst]
+#
+# # 单词间的排序：
+# # 用Counter()统计new_lst中各个单词的出现频率
+# cnt = Counter(new_lst)
+# # 使用lambda匿名函数，
+# # 1. 先按照出现次数即cnt[x]排序，为了实现从大到小排序，需要以-cnt[x]为依据
+# # 2. 再按照长度len(x)排序
+# # 3. 最后再按照字典序排序
+# new_lst.sort(key = lambda x: (-cnt[x], len(x), x))
+#
+# # 最后使用join()方法，将排序后的列表转化为字符串输出，记得用" "隔开
+# print(" ".join(new_lst))
+
+
+
+# 2、MosesMin
+# from collections import Counter
+#
+# lst = input().split() # 这样获取到的输入的一个句子 得到的是一个单词列表  MosesMin
+# print('lst:' + str(lst))
+# # 单词内的排序：
+# # 对于lst中的每一个单词word：
+# # 1. 用list(word)转化为列表  -- 将单词字符串的各个字母转化为字母列表
+# # 2. 用sorted()内置函数得到按照字典序排序的结果 -- 为转换后的字母列表排序
+# # 3. 用join()方法将排序结果重新转化为字符串 -- 将排序后的字母列表转化为字符串
+# # 再使用列表推导式，可以得到新的列表
+# new_lst = ["".join(sorted(list(word))) for word in lst]
+# print('new_lst:' + str(new_lst))
+#
+# # 单词间的排序：
+# # 用Counter()统计new_lst中各个单词的出现频率
+# cnt = Counter(new_lst)
+# # 使用lambda匿名函数，
+# # 1. 先按照出现次数即cnt[x]排序，为了实现从大到小排序，需要以-cnt[x]为依据
+# # 2. 再按照长度len(x)排序
+# # 3. 最后再按照字典序排序
+# new_lst.sort(key = lambda x: (-cnt[x], len(x), x))
+# # 最后使用join()方法，将排序后的列表转化为字符串输出，记得用" "隔开
+# print(" ".join(new_lst))
+
+
+# MosesMin补充：
+# D04-06  字典序是什么？
+# 字典序是一种对对象进行排序的方法，通常用于字符串、数字或其他可比较的数据类型。
+# 在字典序中，对象按照其在字典中出现的顺序进行排序，即按照字母表或数字表的顺序排列。
+# 对于字符串来说，字典序就是按照字母表顺序进行排序；对于数字来说，字典序是按照数值大小进行排序。字典序可以用于比较和排序各种类型的数据。
+
+# lst = input().split()
+#
+# # 列表推导式写法
+# new_lst = ["".join(sorted(list(word))) for word in lst]
+# print(new_lst)
+# print('###############################################')
+#
+# # 复杂写法
+# new_lst = list()
+# for word in lst:
+#     lst_word = list(word)
+#     print('lst_word:'+ str(lst_word))
+#     sort_word = sorted(lst_word)
+#     print('sort_word:' + str(sort_word))
+#     str_sort_word = "".join(sort_word)
+#     print('str_sort_word:' + str_sort_word)
+#     new_lst.append(str_sort_word)
+#     print('---------------------------------------------')
+# print(new_lst)
+# print('###############################################')
+#
+# lst_word是一个列表，sorted(lst_word)和lst_word.sort()是有区别的；
+# sorted(lst_word)会将lst_word排序，并会返回一个排序后的列表；
+# lst_word.sort()也会将lst_word排序，但是返回值为空，直接继续使用lst_word即为排序后的结果。
+
+
+# 时空复杂度
+# 时间复杂度：O(NlogN + Σ(MlogM))。单词内、单词间进行排序的时间复杂度
+# 空间复杂度：O(N)。
+# Σ表示求和，M为每个单词的长度。
+
+
+########################## D04-07 ###################################### 0033
+# 【哈希表】2023Q2B-选修课
+# 题目描述与示例
+# 题目描述
+# 现有两门选修课，每门选修课都有一部分学生选修，每个学生都有选修课的成绩，
+# 需要你找出同时选修了两门选修课的学生，先按照班级进行划分，班级编号小的先输出，
+# 每个班级按照两门选修课成绩和的降序排序，成绩相同时按照学生的学号升序排序。
+#
+# 输入
+# 第一行为第一门选修课学生的成绩，第二行为第二门选修课学生的成绩，
+# 每行数据中学生之间以英文分号分隔，每个学生的学号和成绩以英文逗号分隔，
+# 学生学号的格式为 8 位数字(2 位院系编号+入学年份后 2 位+院系内部 1 位专业编号+所在班级 3 位学号)，
+# 学生成绩的取值范围为 [0,100] 之间的整数，两门选修课选修学生数的取值范围为 [1-2000] 之间的整数。
+#
+# 输出
+# 同时选修了两门选修课的学生的学号，如果没有同时选修两门选修课的学生输出 NULL，
+# 否则，先按照班级划分，班级编号小的先输出，每个班级先输出班级编号(学号前五位)，
+# 然后另起一行输出这个班级同时选修两门选修课的学生学号，
+# 学号按照要求排序(按照两门选修课成绩和的降序，成绩和相同时按照学号升序)，学生之间以英文分号分隔。
+#
+# 示例一
+# 输入
+# 01202021,75;01201033,95;01202008,80;01203006,90;01203088,100
+# 01202008,70;01203088,85;01202111,80;01202021,75;01201100,88
+# 输出
+# 01202
+# 01202008;01202021
+# 01203
+# 01203088
+# 说明
+# 同时选修了两门选修课的学生 01202021、01202008、01203088，
+# 这三个学生两门选修课的成绩和分别为 150、150、185。
+# 01202021、01202008 属于 01202 班的学生，按照成绩和降序，
+# 成绩相同时按学号升序输出的结果为 01202008;01202021。
+# 01203088 属于 01203 班的学生，按照成绩和降序，成绩相同时按学号升序输出的结果为 01203088。
+# 01202 的班级编号小于 01203 的班级编号，需要先输出。
+#
+# 示例二
+# 输入
+# 01201022,75;01202033,95;01202018,80;01203006,90;01202066,100
+# 01202008,70;01203102,85;01202111,80;01201021,75;01201100,88
+# 输出
+# NULL
+# 说明
+# 没有同时选修了两门选修课的学生，输出 NULL。
+# 解题思路
+# 这题属于典型的哈希表和排序的应用，难度不大。但题干较长，需要仔细读题并理解题目含义。
+# 由于分了多层的排序，因此代码也比较长，需要写题时对问题时刻保持清晰的头脑。
+#
+# 代码
+# Python
+
+# 题目：2023Q2B-选修课
+# 分值：100
+# 作者：许老师-闭着眼睛学数理化
+# 算法：哈希表，排序
+# 代码看不懂的地方，请直接在群上提问
+
+# from collections import defaultdict
+#
+# # 定义根据传入的lst构建哈希表的函数
+# def buildDict(lst):
+#     # 初始化一个空哈希表dic
+#     dic = dict()
+#     # 遍历lst中的每一个字符串元素item
+#     for item in lst:
+#         # item中用","隔开学号和成绩
+#         num, grade = item.split(",")
+#         # 以学号num为key，成绩int(grade)为value，存入哈希表dic中
+#         dic[num] = int(grade)
+#     # 哈希表dic构建完毕，返回dic
+#     return dic
+#
+# # 分别输入两行字符串，表示两门选修课情况，
+# # 对字符串根据";"进行分割，存入两个列表中
+# lst1 = input().split(";")
+# lst2 = input().split(";")
+#
+# # 根据两个列表，构建两个字典分别表示选修课1和2的选课情况
+# # 字典中的key为学号，value为成绩
+# dic1 = buildDict(lst1)
+# dic2 = buildDict(lst2)
+#
+# # 由于要统计两门选修课均选了的学生的成绩情况，使用字典推导式构建一个新字典dic_total
+# # dic_total的key为学号，value为两门选修课成绩的和
+# dic_total = {num: (dic1[num] + dic2[num]) for num in dic1 if num in dic2}
+#
+# # 如果dic_total长度为0，说明没有任何一个学生同时选了两门选修课
+# # 按照题意直接输出"NULL"
+# if len(dic_total) == 0:
+#     print("NULL")
+# # 否则可以进行后续的排序和输出
+# else:
+#     # 构建一个新的字典用于储存特定班级所包含的学生
+#     # key为5位的班级编号，value为储存若干学号的列表
+#     dic_class = defaultdict(list)
+#     for num in dic_total:
+#         # 学号的前5位为班级编号
+#         class_num = num[:5]
+#         dic_class[class_num].append(num)
+#
+#     # 遍历dic_class排序后的key，即为班级编号
+#     for class_num in sorted(dic_class.keys()):
+#         # 先输出班级
+#         print(class_num)
+#         # 获得班级class_num的所有学号
+#         num_lst = dic_class[class_num]
+#         # 对num_lst进行排序
+#         # 先按照成绩降序排列，即根据-dic_total[x]升序排列
+#         # 成绩相同时再按照学号排列，即根据x排列
+#         num_lst.sort(key = lambda x: (-dic_total[x], x))
+#         # 输出该班级中排序后的学生学号
+#         print(";".join(num_lst))
+
+# 时空复杂度
+# 时间复杂度：O(NlogN)。排序所需的时间复杂度。
+# 空间复杂度：O(N)。哈希表所占的额外空间。
+
+########################## D04-08 ###################################### 0034
+# 【哈希表】2023Q1A-相同数字的积木游戏
+# 题目描述与示例
+# 题目
+# 小华和小薇一起通过玩积木游戏学习数学。他们有很多积木，每个积木块上都有一个数字，积木块上的数字可能相同。
+# 小华随机拿一些积木挨着排成一排，请小薇找到这排积木中数字相同且所处位置最远的 2 块积木块，
+# 计算他们的距离。小薇请你帮忙替她解决这个问题。
+#
+# 输入
+# 第一行输入为 N ，表示小华排成一排的积木总数。
+# 接下来 N 行每行一个数字，表示小花排成一排的积木上数字。
+# 输出
+# 相同数字的积木的位置最远距离；如果所有积木数字都不相同，请返回 -1
+# 示例一
+# 输入
+# 5
+# 1
+# 2
+# 3
+# 1
+# 4
+# 输出
+# 3
+# 示例二
+# 输入
+# 5
+# 1
+# 2
+# 3
+# 1
+# 1
+# 输出
+# 4
+# 示例三
+# 输入
+# 2
+# 1
+# 2
+# 输出
+# -1
+#
+# 解题思路
+# 本题一道典型的记录下标的哈希表题目，同时也捎带着一点贪心思想。
+#
+# 由于我们需要找到相距最远的两个相同数字，那么对于某一个出现次数大于等于2次的数字num，
+# 我们必定要选其第一个位置和最后一个位置之间的距离来作为可能的答案。
+#
+# 故我们用哈希表dic记录每一个数字cur第一次出现的下标。在第i次循环中，当
+# - 当前数字cur从未出现过，即不位于哈希表中，则记录dic[cur] = i，即i为cur第一次出现的下标。
+# - 当前数字cur曾经出现过，即位于哈希表中，则计算cur与其第一次出现的位置的距离为 i - dic[cur]，将该结果与ans进行比较并更新。
+# 上述逻辑整理为代码即为
+# for i in range(N):
+#     cur = input()
+#     if cur not in dic:
+#         dic[cur] = i
+#     else:
+#         ans = max(ans, i-dic[cur])
+#
+# 代码
+# 题目：2023Q1A-相同数字的积木游戏
+# 分值：100
+# 作者：闭着眼睛学数理化
+# 算法：哈希表
+# 代码看不懂的地方，请直接在群上提问
+
+# N = int(input())
+#
+# # 初始化哈希表，记录每一个数字第一次出现的下标
+# dic = dict()
+# # 初始化答案为-1
+# ans = -1
+#
+# # 循环N次
+# for i in range(N):
+#     # 输入一个数字cur
+#     cur = input()
+#     # 如果当前数字cur从未出现过，则记录i
+#     # i即为cur第一次出现的下标
+#     if cur not in dic:
+#         dic[cur] = i
+#     # 如果当前数字cur曾经出现过
+#     # 那么cur与其第一次出现的位置的距离为 i-dic[cur]
+#     # 更新ans
+#     else:
+#         ans = max(ans, i-dic[cur])
+#
+# print(ans)
+
+
+# 时空复杂度
+# 时间复杂度：O(N)。需要循环N次。
+# 空间复杂度：O(N)。哈希表所占用空间。
+
+########################## D04-09 ###################################### 0035
+# 【哈希集合】2023C-英文输入法
+# 题目描述与示例
+# 题目
+# 主管期望你来实现英文输入法单词联想功能，需求如下：
+# 1. 依据用户输入的单词前缀，从已输入的英文语句中联想出用户想输入的单词。
+# 2. 按字典序输出联想到的单词序列，如果联想不到，请输出用户输入的单词前缀。
+# 注意：
+# 1. 英文单词联想时区分大小写
+# 2. 缩略形式如"don't" 判定为两个单词"don"和 "t"
+# 3. 输出的单词序列不能有重复单词，且只能是英文单词，不能有标点符号
+# 输入
+# 输入两行。
+# 首行输入一段由英文单词word和标点构成的语句str，接下来一行为一个英文单词前缀pre。
+# 0 < word.length() <= 20，0 < str.length() <= 10000，0 < pre.length() <= 20
+# 输出
+# 输出符合要求的单词序列或单词前缀。存在多个时，单词之间以单个空格分割
+# 示例一
+# 输入
+# I love you
+# He
+# 输出
+# He
+# 说明
+# 用户已输入单词语句"I love you"，可以提炼出"I","love","you"三个单词。接下来用户输入"He" ，
+# 从已经输入信息中无法联想到符合要求的单词，所以输出用户输入的单词前缀。
+# 示例二
+# 输入
+# The furthest distance in the world,Is not between life and death,But when I stand in front or you,Yet you don't know that I love you.
+# f
+# 输出
+# front furthest
+# 解题思路
+# 首先我们需要处理输入，将输入的字符串s根据标点符号和空格隔开，
+# 得到一个由若干单词word组成的单词列表lst。
+# 这里稍微有点麻烦，不能再用我们熟悉的split()方法完成，而是改为较为麻烦的遍历写法。
+#
+# 首先我们初始化lst = [""]，即单词列表中存放了一个空字符串。
+# 然后我们遍历字符串s中的字符ch，当
+# - ch是字母，则将其加入到lst最后一个元素的末尾，即延长当前单词。如果此时lst[-1]为一个空字符串""，则ch充当了某个单词首位字母的角色。
+# - ch不是字母，说明遇到一个标点符号，当前单词的获取已经结束，lst的末尾插入一个新的空字符串""。
+#
+# 上述思路整理为代码后即为：
+# lst = [""]
+#
+# for ch in s:
+#     if ch.isalpha():
+#         lst[-1] += ch
+#     else:
+#         lst.append("")
+# 当然这个过程也可用正则表达式以更加简短的代码来完成，但这部分知识已经严重超纲，
+# 大部分题目完全用不上，学有余力的同学可以自行研究一下。
+#
+# 得到lst之后，剩下的工作就相当简单了。由于lst中可能出现重复单词，我们使用哈希集合进行去重操作。
+# 又因为最后的输出要求按照字典序排序，因此去重之后再对哈希集合进行调用sorted()内置函数，再转化为列表。
+# lst_sorted = list(sorted(set(lst)))
+# 对于lst_sorted中的每一个单词word，我们可以使用切片来获得其前pre_length个字符所构成的字符串，
+# 并与pre进行比较，就能够得知word是否包含前缀pre了。
+# pre_length = len(pre)
+# for word in lst_sorted:
+#     if word[:pre_length] == pre:
+#         ans.append(word)
+#
+# 总体来说本题难度不大，甚至很难归类为哪一种具体的算法（用到去重功能就姑且认为是哈希集合吧）。
+# 难点其实主要在于对输入的处理，初始化lst = [""]实际上是一个颇有技巧的做法。
+#
+# 当然本题还存在着前缀树的最优解法，但也严重超纲，不要求掌握。
+#
+# 代码
+# 解法一
+# Python
+
+# 1、X
+# 题目：2023Q1A-英文输入法
+# 分值：100
+# 作者：许老师-闭着眼睛学数理化
+# 算法：哈希集合
+# 代码看不懂的地方，请直接在群上提问
+
+# s = input()
+# pre = input()
+#
+# # 初始化列表lst用于存放所有单词
+# lst = [""]
+#
+# # 遍历s中的所有字符ch，如果
+# # 1. ch是字母，则加入到lst最后一个元素的末尾，即延长当前单词
+# # 2. ch不是字母，说明遇到一个标点符号，结束当前单词的获取，lst的末尾插入一个新的空字符串""
+# # 这个过程也可以使用正则表达式来完成，不要求掌握，学有余力的同学可以自学一下
+# for ch in s:
+#     if ch.isalpha():
+#         lst[-1] += ch
+#     else:
+#         lst.append("")
+#
+# # 用哈希集合去重lst中可能出现的重复单词
+# # 去重后进行排序，排序后在转化为列表lst_sorted
+# lst_sorted = list(sorted(set(lst)))
+#
+# # 初始化答案数组
+# ans = list()
+#
+# # 获得pre的长度，用于切片
+# pre_length = len(pre)
+# # 遍历lst_sorted中的每一个单词
+# for word in lst_sorted:
+#     # 如果word前pre_length个字符的切片等于pre
+#     # 说明word的前缀是pre，将其加入答案数组ans中
+#     if word[:pre_length] == pre:
+#         ans.append(word)
+#
+# # 如果ans长度大于0，说明至少存在一个单词的前缀是pre，输出由所有单词组成的字符串
+# # 如果ans长度等于0，说明不存在任何一个单词的前缀是pre，返回pre
+# print(" ".join(ans) if len(ans) > 0 else pre)
+
+
+
+# 2、MosesMin
+# s = input()
+# pre = input()
+#
+# # 初始化列表lst用于存放所有单词
+# lst = [""]
+#
+# # 遍历s中的所有字符ch，如果
+# # 1. ch是字母，则加入到lst最后一个元素的末尾，即延长当前单词
+# # 2. ch不是字母，说明遇到一个标点符号，结束当前单词的获取，lst的末尾插入一个新的空字符串""
+# # 这个过程也可以使用正则表达式来完成，不要求掌握，学有余力的同学可以自学一下
+# for ch in s:
+#     if ch.isalpha():
+#         lst[-1] += ch
+#     else:
+#         lst.append("")
+#
+# # 用哈希集合去重lst中可能出现的重复单词
+# # 去重后进行排序，排序后在转化为列表lst_sorted
+# # MosesMin ，不需要这样写：list(sorted(set(lst))) ，sorted()函数会返回list，所以这里写为sorted(set(lst))即可
+# lst_sorted = sorted(set(lst))
+#
+# # 初始化答案数组
+# ans = list()
+#
+# # 获得pre的长度，用于切片
+# pre_length = len(pre)
+# # 遍历lst_sorted中的每一个单词
+# for word in lst_sorted:
+#     # 如果word前pre_length个字符的切片等于pre
+#     # 说明word的前缀是pre，将其加入答案数组ans中
+#     if word[:pre_length] == pre:
+#         ans.append(word)
+#
+# # 如果ans长度大于0，说明至少存在一个单词的前缀是pre，输出由所有单词组成的字符串
+# # 如果ans长度等于0，说明不存在任何一个单词的前缀是pre，返回pre
+# print(" ".join(ans) if len(ans) > 0 else pre)
+
+
+########################## D04-10 ###################################### 0036
+# 【哈希集合】2023Q1A-寻找密码
+# 题目描述与示例
+# 题目描述
+# 小王在进行游戏大闯关，有一个关卡需要输入一个密码才能通过，密码获得的条件如下：
+# 在一个密码本中，每一页都有一个由 26 个小写字母组成的若干位密码，从它的末尾开始依次去掉一位得到的新密码也在密码本中存在。
+# 请输出符合要求的最长密码，如果由多个符合要求的密码，则返回字典序最大的密码。若没有符合要求的密码，则返回空字符串。
+#
+# 输入
+# 密码本由一个字符串数组组成，不同元素之间使用空格隔开，每一个元素代表密码本每一页的密码。
+# 输出
+# 一个字符串
+# 示例一
+# 输入
+# h he hel hell hello
+# 输出
+# hello
+# 说明
+# "hello" 从末尾依次去掉一位得到的 "hell", "hel", "he", "h"在密码本中都存在。
+# 示例二
+# 输入
+# b eredderd bw bww bwwl bwwlm bwwln
+# 输出
+# bwwln
+#
+# 解题思路
+# 最朴素的解法是将所有字符串都存在一个哈希表password_set中，然后遍历字符串数组中的每一个密码password，
+# 对每一个password都去判断其所有的前缀是否也位于password_set中。如果满足，则把password和ans比较并且更新ans。
+#
+# 这种做法虽然思路直接简单，但略显笨重，会出现很多重复计算。
+#
+# 以示例一为例子：
+# - 对于单词hell，需要分别考虑前缀h、he、hel
+# - 对于单词hello，需要分别考虑前缀h、he、hel、hell
+# - 前缀h、he、hel对于单词hello而言，显然是重复计算了。
+# - 假设我们已经知道单词hell是一个有效的密码，那么对于单词hello，我们就只需要去考虑hell这个前缀，而不需要再去考虑h、he、hel这三个前缀了。
+# - 换句话说，单词hello是否是一个有效的密码，可以由其去掉末尾的前缀hell是否是一个有效的密码来决定。
+# 这本质上是一种动态规划的思想。（动态规划更详细的内容在后面会讲到）
+#
+# 如果用动态规划的语言来描述，即：password是一个有效密码，当且仅当password[:-1]是一个有效密码。
+#
+# 那么现在问题就变成了：如何能够在判断password是一个有效密码之前，就先判断得到password[:-1]是否有效？
+# 这个问题就很简单了。我们只需要对原来的字符串数组password_lst按照字典序进行排序，
+# 就可以保证在password进行判断时，password[:-1]已经被判断过了。
+#
+# 我们可以构建一个用于储存所有有效密码的哈希集合valid_set。
+# 然后遍历排序过的字符串数组password_lst中的每一个密码password，
+# 如果其去掉末尾的前缀password[:-1]位于valid_set中，说明password也是一个有效密码，需要将其加入valid_set中，同时更新ans。
+# for password in password_lst:
+#     if password[:-1] in valid_set:
+#         valid_set.add(password)
+#         ans = password
+# 注意valid_set初始化时要包含一个空串""，因为只有一个字符的密码比如"h"，
+# 去掉最末尾的字符之后是一个空串""，"h"理应是一个有效的密码，故""应该存在于valid_set中。
+# 即：
+# valid_set = {""}
+#
+# 代码
+# 解法一
+# （哈希集合暴力解法，只能通过部分用例）
+# Python
+# 题目：2023Q1A-寻找密码
+# 分值：100
+# 作者：闭着眼睛学数理化
+# 算法：哈希表暴力解法
+# 代码看不懂的地方，请直接在群上提问
+
+# 将输入字符串分割为字符串数组，并且存入哈希集合中
+# password_lst = list(input().split())
+# password_set = set(password_lst)
+# # 初始化答案为一个空字符串
+# ans = str()
+#
+# # 遍历password_lst中的所有密码单词password
+# for password in password_lst:
+#     # 如果password的长度比ans小，不可能是答案，直接跳过
+#     if len(password) < len(ans):
+#         continue
+#     # password有可能不符合要求，设置一个标记isValid，初始化为True表示该密码符合要求
+#     isValid = True
+#     # 遍历password的所有前缀password[:i]，判断前缀是否均位于password_set中
+#     for i in range(1, len(password)):
+#         # 若某一个前缀不位于哈希集合password_set中，则该password无效，修改isValid为False，且退出循环
+#         if password[:i] not in password_set:
+#             isValid = False
+#             break
+#     # isValid为True，说明该password有效，将其与ans比较并更新ans
+#     if isValid:
+#         if len(password) > len(ans):
+#             ans = password
+#         else:
+#             ans = max(ans, password)
+# print(ans)
+
+# 时空复杂度
+# 时间复杂度：O(NM)。遍历每个单词、每个字符所需的时间。
+# 空间复杂度：O(NM)。
+# N为单词数目，M为单词平均长度。
+
+# 解法二
+# （哈希集合优化解法，含DP思想，可以通过全部用例）
+# Python
+# 题目：2023Q1A-寻找密码
+# 分值：100
+# 作者：闭着眼睛学数理化
+# 算法：哈希表优化解法
+# 代码看不懂的地方，请直接在群上提问
+
+# password_lst = input().split()
+# # 对输入的字符串数组进行升序排序
+# password_lst.sort()
+#
+# # 初始化一个表示有效密码的哈希集合，初始化其中仅包含空字符串
+# valid_set = {""}
+# # 初始化答案为空字符串
+# ans = ""
+#
+# # 从头到尾遍历升序字符串数组password_lst中的密码password
+# for password in password_lst:
+#     # 如果password去掉最后一位的结果password[:-1]，位于valid_set哈希集合中
+#     # 说明当前的password是一个有效密码，将其加入valid_set，同时更新ans
+#     if password[:-1] in valid_set:
+#         valid_set.add(password)
+#         if len(password) >= len(ans):
+#             ans = password
+#
+# print(ans)
+
+# 疑问：
+# 20240325:
+# D04-06
+# new_lst.sort(key = lambda x: (-cnt[x], len(x), x)) 最后一个x的作用？ 是根据x排列，字典序的意思。 如D04-07 倒数第二行的注释。
 
 
 
