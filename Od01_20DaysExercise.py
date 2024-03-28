@@ -2669,7 +2669,7 @@
 #     public int[] intersect(int[] nums1, int[] nums2) {
 #         Map<Integer, Integer> count1 = new HashMap<>();
 #         Map<Integer, Integer> count2 = new HashMap<>();
-#         List<Integer> result = new ArrayList<>();
+#         list<Integer> result = new Arraylist<>();
 #
 #         // Count occurrences in the first array
 #         for (int num : nums1) {
@@ -2917,7 +2917,7 @@
 
 # Java
 # import java.util.HashSet;
-# import java.util.ArrayList;
+# import java.util.Arraylist;
 # import java.util.Collections;
 # import java.util.Scanner;
 #
@@ -2932,7 +2932,7 @@
 #             num_set.add(scanner.nextInt());
 #         }
 #
-#         ArrayList<Integer> num_lst = new ArrayList<>(num_set);
+#         Arraylist<Integer> num_lst = new Arraylist<>(num_set);
 #         Collections.sort(num_lst);
 #
 #         for(int num: num_lst){
@@ -3063,7 +3063,7 @@
 # 代码有看不懂的地方一定要私聊咨询吴师兄呀
 # 两数之和（LeetCode 1）:https://leetcode-cn.com/problems/two-sum/
 # class Solution:
-#     def twoSum(self, nums: List[int], target: int) -> List[int]:
+#     def twoSum(self, nums: list[int], target: int) -> list[int]:
 #        # 首先构建一个哈希表，用来存放数组的元素值以及索引值
 #        # 其中 key 是数组中的元素值
 #        # value 为数组中元素值的索引
@@ -3316,7 +3316,7 @@
 
 # 1、W
 # class Solution:
-#     def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
+#     def groupAnagrams(self, strs: list[str]) -> list[list[str]]:
 #         # 互为字母异位词的两个字符串包含的字母相同
 #         # 因此两个字符串中的相同字母出现的次数一定是相同的
 #         # 可以将每个字母出现的次数使用字符串表示，作为哈希表的键
@@ -3880,7 +3880,9 @@
 # 从已经输入信息中无法联想到符合要求的单词，所以输出用户输入的单词前缀。
 # 示例二
 # 输入
-# The furthest distance in the world,Is not between life and death,But when I stand in front or you,Yet you don't know that I love you.
+# The furthest distance in the world,Is not between life and death,
+# ~But when I stand in front or you,Yet you don't know that I love you.
+
 # f
 # 输出
 # front furthest
@@ -4180,6 +4182,40 @@
 # 提示：
 # - 1 <= prices.length <= 500
 # - 1 <= prices[i] <= 10^3
+
+# MosesMin 本题核心图解思路：我们使用的从后往前遍历 （当然也可以从前往后遍历） 只考虑元素值的情况
+
+# 0
+# 输入列表情况：[8,4,6,2,3]
+# 待入栈情况：【3】
+# 待输出列表情况：[  0, 0, 0, 0, 0]
+
+# 1
+# 输入列表情况：[8,4,6,2,3]
+# 入栈情况：【3】 3后没有元素 所以待输出位置3
+# 待输出列表情况：[  0, 0, 0, 0, 3]
+
+# 2
+# 输入列表情况：[8,4,6,2,3]
+# 入栈情况： 2要入栈，因为2<栈顶元素3 3弹出    栈变为：【2】
+# 待输出列表情况：[  0, 0, 0, 2, 3]
+
+# 3
+# 输入列表情况：[8,4,6,2,3]
+# 入栈情况：6要入栈 因为6>栈顶元素2  所以2不弹出 【2】，6入栈 栈变为：【6,2】
+# 6 - 2 = 4
+# 待输出列表情况：[  0, 0, 4, 2, 3]
+
+# 4
+# 输入列表情况：[8,4,6,2,3]
+# 入栈情况：4要入栈 因为4<栈顶元素6  6弹出  栈变为：【2】  4入栈 栈变为【4,2】
+# 4 - 2 = 2
+# 待输出列表情况：[  0, 2, 4, 2, 3]
+# …………
+
+# 另外  还要理解 while判断条件对应的 图解情况
+
+
 # 二、题目解析
 # 暂时无法在飞书文档外展示此内容
 # 三、参考代码
@@ -4192,7 +4228,7 @@
 # 代码看不懂的地方，请直接在群上提问
 
 # class Solution:
-#     def finalPrices(self, prices: List[int]) -> List[int]:
+#     def finalPrices(self, prices: list[int]) -> list[int]:
 #
 #         # 原数组的长度
 #         n = len(prices)
@@ -4241,7 +4277,7 @@
 # # 代码看不懂的地方，请直接在群上提问
 #
 # class Solution:
-#     def finalPrices(self, prices: List[int]) -> List[int]:
+#     def finalPrices(self, prices: list[int]) -> list[int]:
 #         for i in range(len(prices)):                # 第一层循环，遍历整个prices数组
 #             for j in range(i+1, len(prices)):       # 第二层循环，遍历索引为i+1以及之后元素
 #                 if prices[j] <= prices[i]:          # 找到不大于prices[i]的第一个prices[j]
@@ -4285,6 +4321,51 @@
 # 所以需要取出栈顶元素，由于当前数字大于栈顶元素的数字，而且一定是第一个大于栈顶元素的数，直接求出下标差就是二者的距离。
 # 继续看新的栈顶元素，直到当前数字小于等于栈顶元素停止，再将数字入栈，
 # 这样就可以一直保持递增栈，且每个数字和第一个大于它的数的距离也可以算出来。
+
+# MosesMin 本题核心图解思路：索引和元素值一起入栈 例如 [0-73]
+
+# 1
+# 输入列表情况：[73, 74, 75, 71, 69, 72, 76, 73]
+# 入栈情况：【0-73】
+# 待输出列表情况：[0, 0, 0, 0, 0, 0, 0, 0]
+
+# 2
+# 输入列表情况：[73, 74, 75, 71, 69, 72, 76, 73]
+# 入栈情况：【1-74】 因为74>73 0-73弹出
+# 1 - 0 = 1
+# 待输出列表情况：[1, 0, 0, 0, 0, 0, 0, 0]
+
+# 3
+# 输入列表情况：[73, 74, 75, 71, 69, 72, 76, 73]
+# 入栈情况：【2-75】 因为75>74 1-74弹出
+# 2 - 1 = 1
+# 待输出列表情况：[1, 1, 0, 0, 0, 0, 0, 0]
+
+# 4
+# 输入列表情况：[73, 74, 75, 71, 69, 72, 76, 73]
+# 入栈情况：【3-71,2-75】 71<75  3-71入栈
+# 待输出列表情况：[1, 1, 0, 0, 0, 0, 0, 0]
+
+# 5
+# 输入列表情况：[73, 74, 75, 71, 69, 72, 76, 73]
+# 入栈情况：【4-69,3-71，2-75】
+# 待输出列表情况：[1, 1, 0, 0, 0, 0, 0, 0]
+
+# 6 while的持续过程
+# 输入列表情况：[73, 74, 75, 71, 69, 72, 76, 73]
+# 入栈情况：【5-72,3-71,2-75】  4-69弹出
+# 5-4 =1
+# 待输出列表情况：[1, 1, 0, 0, 1, 0, 0, 0]
+
+# 7 while的持续过程
+# 输入列表情况：[73, 74, 75, 71, 69, 72, 76, 73]
+# 入栈情况：【5-72，2-75】  3-71弹出
+# 5-3 =1
+# 待输出列表情况：[1, 1, 0, 2, 1, 0, 0, 0]
+
+# …………
+
+# 另外  还要理解 while判断条件对应的 图解情况
 
 # 三、参考代码
 # 登录 AlgoMooc 官网获取更多算法图解
@@ -4375,6 +4456,9 @@
 # 计算完一个凹槽的面积之后，我们就把栈顶元素弹出，
 # 察剩下的那些栈中的元素能否和新添加的元素再构成一个新的凹槽。
 
+# MosesMin 本题核心图解思路：入栈时，凹槽元素之后的元素比凹槽元素大 凹槽元素弹出
+# [0,1,0,2,1,0,1,3,2,1,2,1]  比如索引为2的0 就是个凹槽元素  遇到索引为3的元素2时  0就要弹出
+# 另外  还要理解 while判断条件对应的 图解情况
 
 # 三、参考代码
 # 登录 AlgoMooc 官网获取更多算法图解
@@ -4447,6 +4531,115 @@
 #
 #         # 最后返回结果即可
 #         return result
+
+# MosesMin优化版本：
+# class Solution:
+#     # D05-03 MosesMin变体1
+#     # 输入：height = [0,1,0,2,1,0,1,3,2,1,2,1]
+#     # 输出：6
+#     def trap1(self, height: list[int]) -> int:
+#         stack = []  # stack = list()
+#         ans = 0
+#
+#         for i,h in enumerate(height):
+#             if not stack:
+#                 stack.append(i)
+#
+#             elif h <= height[stack[-1]]:
+#                 stack.append(i)
+#
+#             else:
+#                 while stack and height[i] > height[stack[-1]]:
+#                     bottom = stack[-1]
+#                     stack.pop()
+#
+#                     if stack:
+#                         h = min(height[stack[-1]], height[i]) - height[bottom]
+#                         w = i - stack[-1] - 1
+#
+#                         ans += h * w
+#
+#                 stack.append(i)
+#         return ans
+#
+#     # D05-03 MosesMin变体2
+#     # 输入：height = [0,1,0,2,1,0,1,3,2,1,2,1]
+#     # 输出：6
+#     def trap2(self, height: list[int]) -> int:
+#         stack = []  # stack = list()
+#         ans = 0
+#         length = len(height)
+#         for i in range(length):
+#             if not stack:
+#                 stack.append(i)
+#
+#             elif height[i] <= height[stack[-1]]:
+#                 stack.append(i)
+#
+#             else:
+#                 while stack and height[i] > height[stack[-1]]:
+#                     bottom = stack[-1]
+#                     stack.pop()
+#
+#                     if stack:
+#                         h = min(height[stack[-1]], height[i]) - height[bottom]
+#                         w = i - stack[-1] - 1
+#
+#                         ans += h * w
+#
+#                 stack.append(i)
+#         return ans
+#
+#     # D05-03 MosesMin变体3--最重要 自己重新理了逻辑架构
+#     # 输入：height = [0,1,0,2,1,0,1,3,2,1,2,1]
+#     # 输出：6
+#     def trap(self, height: list[int]) -> int:
+#         # 一开始水的面积是 0
+#         ans = 0
+#         # 构建一个栈，用来存储对应的柱子的下标
+#         # stack 存储的是下标而非高度
+#         stack = []
+#         # 获取数组的长度
+#         length = len(height)
+#         # 从头开始遍历整个数组
+#         for i in range(length):
+#             # 如果栈为空，那么直接把当前索引加入到栈中
+#             if not stack:
+#                 stack.append(i)
+#             # 如果栈不为空
+#             # 则说明，栈里面是有值的，我们需要去判断此时的元素、栈顶元素、栈顶之前的元素能否形成一个凹槽
+#             else:
+#                 # 情况一、二：此时的元素小于（情况一）或者等于（情况二）栈顶元素，凹槽的右侧不存在，无法形成凹槽
+#                 if height[i] <= height[stack[-1]]:
+#                     # 把当前索引加入到栈中
+#                     stack.append(i)
+#                 # 情况三：此时的的元素大于栈顶元素，有可能形成凹槽
+#                 # 注意是有可能形成，因为比如栈中的元素是 2 、2 ，此时的元素是 3，那么是无法形成凹槽的
+#                 else:
+#                     # 由于栈中有可能存在多个元素，移除栈顶元素之后，剩下的元素和此时的元素也有可能形成凹槽
+#                     # 因此，我们需要不断的比较此时的元素和栈顶元素
+#                     # 此时的元素依旧大于栈顶元素时，我们去计算此时的凹槽面积
+#                     # 借助 while 循环来实现这个操作
+#                     while stack and height[i] > height[stack[-1]]:
+#                         # 1、获取栈顶的下标，bottom 为凹槽的底部位置
+#                         bottom = stack[-1]
+#                         # 将栈顶元素推出，去判断栈顶之前的元素是否存在，即凹槽的左侧是否存在
+#                         stack.pop()
+#                         # 2、如果栈不为空，即栈中有元素，即凹槽的左侧存在
+#                         if stack:
+#                             # 凹槽左侧的高度 height[stack[-1] 和 凹槽右侧的高度 height[i]
+#                             # 这两者的最小值减去凹槽底部的高度就是凹槽的高度
+#                             h = min(height[stack[-1]], height[i]) - height[bottom]
+#                             # 凹槽的宽度等于凹槽右侧的下标值 i 减去凹槽左侧的下标值 stack.top 再减去 1
+#                             w = i - stack[-1] - 1
+#                             # 将计算的结果累加到最终的结果上去
+#                             ans += h * w
+#                     # 栈中和此时的元素可以形成栈的情况在上述 while 循环中都已经判断了
+#                     # 那么，此时栈中的元素必然不可能大于此时的元素，所以可以把此时的元素添加到栈中
+#                     stack.append(i)
+#         # 最后返回结果即可
+#         return ans
+
 
 # 四、复杂度分析
 # 时间复杂度：O(n)，其中 n 是数组 height 的长度。从 0 到 n−1 的每个下标最多只会入栈和出栈各一次。
@@ -4529,44 +4722,20 @@
 # https://leetcode.cn/problems/implement-stack-using-queues/solutions/432204/yong-dui-lie-shi-xian-zhan-by-leetcode-solution/
 
 # 一、题目描述：
-# 请你仅使用两个队列实现一个后入先出（LIFO）的栈，并支持普通栈的全部四种操作（push、top、pop
-# 和
-# empty）。
+# 请你仅使用两个队列实现一个后入先出（LIFO）的栈，并支持普通栈的全部四种操作（push、top、pop和empty）。
 #
-# 实现
-# MyStack
-# 类：
-#
-# void
-# push(int
-# x) 将元素
-# x
-# 压入栈顶。
-# int
-# pop()
-# 移除并返回栈顶元素。
-# int
-# top()
-# 返回栈顶元素。
-# boolean
-# empty()
-# 如果栈是空的，返回
-# true ；否则，返回
-# false 。
+# 实现MyStack类：
+# void push(int x) 将元素x压入栈顶。
+# int pop() 移除并返回栈顶元素。
+# int top() 返回栈顶元素。
+# boolean empty() 如果栈是空的，返回true ；否则，返回false 。
 #
 #
 # 注意：
 #
 # 你只能使用队列的标准操作 —— 也就是
-# push
-# to
-# back、peek / pop
-# from front、size
-# 和 is empty
-# 这些操作。
-# 你所使用的语言也许不支持队列。 你可以使用
-# list （列表）或者
-# deque（双端队列）来模拟一个队列, 只要是标准的队列操作即可。
+# push to back、peek / pop from front、size 和 is empty这些操作。
+# 你所使用的语言也许不支持队列。 你可以使用list （列表）或者deque（双端队列）来模拟一个队列, 只要是标准的队列操作即可。
 #
 #
 # 示例：
@@ -4605,6 +4774,26 @@
 # 都保证栈不为空
 #
 # 进阶：你能否仅用一个队列来实现栈。
+
+# D05 - 05
+# MosesMin补充：队列的特性
+# from collections import deque
+#
+# # 创建一个队列
+# queue = deque([1, 2, 3, 4, 5])
+#
+# # 使用 popleft() 移除并返回队首元素
+# first_element = queue.popleft()
+# print("移除的队首元素是:", first_element)
+# last_element = queue.pop()
+# print("移除的队尾元素是:", last_element)
+# # 打印移除元素后的队列
+# print("移除元素后的队列:", queue)
+#
+# 输出：
+# 移除的队首元素是: 1
+# 移除的队尾元素是: 5
+# 移除元素后的队列: deque([2, 3, 4])
 
 # 二、题目解析
 # https://leetcode.cn/problems/implement-stack-using-queues/solutions/432204/yong-dui-lie-shi-xian-zhan-by-leetcode-solution/
@@ -4722,11 +4911,14 @@
 # - nums1和nums2中所有整数 互不相同
 # - nums1 中的所有整数同样出现在 nums2 中
 # 二、参考代码
+# 1、W
 # class Solution:
 #     def nextGreaterElement(self, nums1: list[int], nums2: list[int]) -> list[int]:
 #
 #         # 先计算 nums2 • 中每个元素右边的第一个更大的值
 #         # 结果存放到一个哈希集合里面
+#         # MosesMin注： 上一行注释吴师兄说哈希集合 意思应该是哈希表 哈希表 在python中就是字典 dict(),也可以直接用{}初始化  哈希表的键不能重复  值可以重复
+#         # MosesMin注：哈希集合在python中是 set()  哈希集合中元素值不能重复
 #         # key 是 nums2 中的元素
 #         # value 是这个元素右边的第一个更大的值
 #         res = {}
@@ -4736,8 +4928,8 @@
 #         stack = []
 #
 #         # 从后向前访问 nums 中的元素
+#         # 从后往前的写法2： for i in range(len-1,-1,-1)  :表示从索引 len-1 遍历到 0，步长是-1
 #         for num in reversed(nums2):
-#
 #             # 在访问过程中
 #             # 维护单调递增栈的性质
 #             # 不断的去拿栈顶元素和当前元素 num 比较
@@ -4767,6 +4959,26 @@
 #
 #         # 返回结果
 #         return ans
+
+
+# 2、MosesMin
+class Solution:
+    # 输入：nums1 = [2,4], nums2 = [1,2,3,4].
+    # 输出：[3,-1]
+    def nextGreaterElement(self, nums1: list[int], nums2: list[int]) -> list[int]:
+        res = {}
+        stack = []
+
+        for num in reversed(nums2):
+            while stack and num >= stack[-1]:
+                stack.pop()
+            res[num] = stack[-1] if stack else -1
+            stack.append(num)
+        ans = []
+
+        for num in nums1:
+            ans.append(res[num])
+        return ans
 
 
 # ------------------------------------- D05-07 ------------------------------------- 0043
@@ -5131,7 +5343,7 @@
 # # 代码有看不懂的地方一定要私聊咨询吴师兄呀
 # # 合并两个有序数组( LeetCode 88 ):https:#leetcode-cn.com/problems/merge-sorted-array/
 # class Solution:
-#     def merge(self, nums1: List[int], m: int, nums2: List[int], n: int) -> None:
+#     def merge(self, nums1: list[int], m: int, nums2: list[int], n: int) -> None:
 #         # 索引从有序数组 nums1 有效元素的末端开始
 #         # 数组的下标索引从零开始计数
 #         # 索引   0    1     2
