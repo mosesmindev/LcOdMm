@@ -5029,6 +5029,20 @@ class Solution:
 # 出栈条件
 # h > height[stack[-1]]
 # h >= height[stack[-1]]
+
+# D05-07 文档仔细看下  正序和逆序的对别与区别 --MosesMin
+
+# D05-07 map的作用
+# lst_str = ["1", "2", "3"]
+# print(lst_str)
+# # 得到lst_num为[1, 2, 3]
+# lst_num = list(map(int, lst_str))
+# print(lst_num)
+
+# 输出：
+# ['1', '2', '3']
+# [1, 2, 3]
+
 # 代码
 # 解法一
 # Python
@@ -5125,6 +5139,60 @@ class Solution:
 # 时间复杂度：O(N)。不管是正序还是逆序遍历，均仅需一次遍历height数组。
 # 空间复杂度：O(N)。单调栈所占用的额外空间。
 
+# MosesMin总结 正序逆序
+# # 输入小朋友个数n
+# n = int(input())
+# # 输入N个小朋友的高度数组
+# height = list(map(int,input().split()))
+# # 构建列表ans，用来保存输出结果
+# # 初始化其中所有的元素均为0
+# ans = [0]*n
+# # 构建一个单调栈，用来存放不同小朋友的身高的索引
+# # 栈中储存的索引所对应在height中的元素大小，从栈底至栈顶单调递增
+# # 即更大的数（的下标）位于栈底
+# stack = list()
+#
+# # 顺序
+# # 从头开始遍历每一个小朋友的身高
+# for i, h in enumerate(height):
+#     # 第i个小朋友的身高h，需要不断地与栈顶元素比较
+#     # 如果栈顶元素存在并且h【大于】栈顶元素stack[-1]
+#     # 意味着栈顶元素找到了右边最近的比他更高的身高h
+#     while len(stack) > 0 and h > height[stack[-1]]:
+#         # 首先获取栈顶元素的值，也就是上一个比h小的身高的索引值
+#         preIndex = stack.pop()
+#
+#         # i即为preIndex这个索引所对应的，下一个最近身高
+#         ans[preIndex] = i
+#
+#     # 再把当前小朋友身高的下标i存放到栈中
+#     # 注意：所储存的是下标i，而不是身高h
+#     stack.append(i)
+#
+# # 逆序
+# # 逆序遍历每一个小朋友的身高
+# for i in range(n-1, -1, -1):
+#     h = height[i]
+#     # 第i个小朋友的身高h，需要不断地与栈顶元素比较
+#     # 如果栈顶元素存在并且h【大于等于】栈顶元素stack[-1]
+#     # 说明栈顶元素stack[-1]并不是身高h右边最近的比h更大的元素
+#     # 需要将栈顶元素弹出，继续寻找比h大的栈顶元素
+#     while len(stack) > 0 and h >= height[stack[-1]]:
+#         # 栈顶元素下标对应的身高不大于当前身高h，不是符合要求的更大身高，弹出
+#         stack.pop()
+#     # 完成弹出后，如果栈顶仍存在元素，说明stack[-1]所对应的身高，是严格比h大的下一个身高
+#     if len(stack) > 0:
+#         # ans[i]修改为stack[-1]
+#         ans[i] = stack[-1]
+#
+#     # 再把当前小朋友身高的下标i存放到栈中
+#     # 注意：所储存的是下标i，而不是身高h
+#     stack.append(i)
+# #
+# # ans中的int元素转成str后才能合并成字符串
+# print(" ".join(map(str, ans)))
+# # 与上一行的输出效果相同 MosesMin
+# print(" ".join(str(i) for i in ans))
 
 # ------------------------------------- D05-08 ------------------------------------- 0044
 # 【单调栈】2023Q1A-删除重复数字后的最大数字
@@ -5191,7 +5259,17 @@ class Solution:
 #         stack.append(num)
 #         used.add(num)
 # 本题基本就完成了。
-#
+
+
+# D05-08 MosesMin
+# stack = [4,3,2,1]
+# print("".join(str(i) for i in stack))
+# 输出：4321 即先入栈的栈底元素4也先输出  所以构建一个单调递增栈  即从栈顶到栈底逐渐增大 符合要求 # D05-08 MosesMin
+# # stack = [4,3,2,1]
+# # print("".join(str(i) for i in stack))
+# # 输出：4321 即先入栈的栈底元素4也先输出  所以构建一个单调递增栈  即从栈顶到栈底逐渐增大 符合要求
+
+
 # 代码
 # Python
 #
