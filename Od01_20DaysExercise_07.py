@@ -311,8 +311,11 @@ class Solution:
             # i 指向的为第二个 -1 时，left 指向的元素值为 0 ，right 指向的元素值为 1 
             # 这两组解都是 [ -1 , 0 , 1]，所以需要去重
             if i > 0 and nums[i] == nums[i - 1]:
+                #  continue 关键字用于跳过当前循环中的剩余代码，并继续下一次循环的执行。
+                #  这通常用于在循环中遇到特定条件时跳过当前迭代。
                 continue
                 # left 为从 i 到 len - 1 的元素，向右移动
+
             left = i + 1
             # right 为从 len - 1 向左移动到 i 的元素，向左移动
             right = len(nums) - 1
@@ -349,3 +352,5 @@ class Solution:
                     right -= 1
         # 返回结果
         return ans
+
+
