@@ -352,5 +352,3 @@ class Solution:
                     right -= 1
         # 返回结果
         return ans
-
-

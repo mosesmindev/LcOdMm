@@ -8,5 +8,5 @@
       <configuration PROFILE_NAME="Debug" CONFIG_NAME="Debug" />
     </configurations>
   </component>
-  <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.12 (LcOdMm)" project-jdk-type="Python SDK" />
+  <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.12 (Py312)" project-jdk-type="Python SDK" />
 </project>

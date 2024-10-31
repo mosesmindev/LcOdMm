@@ -5863,6 +5863,8 @@ class Solution:
 #
 # 三、参考代码
 
+print(123)
+
 
 
 
